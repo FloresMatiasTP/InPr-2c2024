@@ -1,0 +1,119 @@
+1)
+
+procedure EliminarRebeldesQueTienen_(codArma) {
+  /*
+    Propósito: Eliminar los rebeldes que posean el arma *codArma*.
+    Precondición: Hay una única arma de código *codArma* en el tablero.
+    Parámetros:
+    * codArma : Número - El código de un arma para la cual se eliminan los rebeldes que la poseen.
+    Observaciones: 
+  */
+  IrAlArmaDeCódigo_(codArma)
+  EliminarRebeldesLindantesSiLosHay()
+}
+
+procedure IrAlArmaDeCódigo_(codArma) {
+  /*
+    Propósito: Ubicar el cabezal en el arma de código *codArma*.
+    Precondición: Hay una única arma de código *codArma* en el tablero.
+    Parámetros:
+    * codArma : Número - El código del arma sobre la cual ubicar el cabezal.
+    Observación: Es un recorrido de búsqueda sobre armas buscando el arma de código codArma.
+  */
+  IrAPrimerArma...
+  while (armaAquí() /= codArma) {
+    IrASiguienteArma...
+  }
+}
+
+procedure EliminarRebeldesLindantesSiLosHay() {
+  /*
+    Propósito: Elimina todo rebelde que esté en una celda lindante a la actual.
+    Precondición: Ninguna.
+    Observación: Recorrido de procesamiento sobre direcciones, eliminando rebeldes en la celda lindante hacia cada una, en caso de haber.
+  */
+  dirActual := minDir()
+  while(dirActual /= maxDir()) {
+    EliminarRebeldeLindanteAl_SiHay(dirActual)
+    dirActual := siguiente(dirActual)
+  }
+  EliminarRebeldeLindanteAl_SiHay(dirActual)
+}
+
+procedure EliminarRebeldeLindanteAl_SiHay(dirección) {
+  /*
+    Propósito: Eliminar rebelde en la celda lindante al *dirección* de la celda actual, si hay.
+    Precondiciones: Ninguna.
+    Parámetros:
+    * dirección : Dirección - La dirección de la celda lindante en la que se elimina un rebelde, si hay.
+  */
+  if (hayRebeldeAl_(dirección)) {
+    EliminarRebeldeAl_(dirección)
+  }
+}
+
+2)
+
+function elArmaMásAbundante() {
+  /*
+    Propósito: Describir el código del arma más abundante en el tablero.
+    Precondiciones:
+    * Hay al menos un arma en el tablero.
+    * No hay dos códigos de armas que empaten en cantidad.
+    Tipo: Número.
+    Observación: Recorrido de máximo-mínimo sobre las armas del tablero, obteniendo el código más abundante.
+  */
+  IrAPrimerArma...
+  // Recordar el óptimo por ahora como el primer arma
+  códigoMásAbundantePorAhora := armaAquí()
+  while(haySiguienteArma...) {
+    IrASiguienteArma...
+    códigoMásAbundantePorAhora := códigoMásAbundanteEntre_Y_(armaAquí(), códigoMásAbundantePorAhora)
+    )
+  }
+  return(códigoMásAbundantePorAhora)
+}
+
+function códigoMásAbundanteEntre_Y_(codArma1, codArma2) {
+  /*
+    Propósito: Describir el código del arma más abundante entre codArma1 y codArma2.
+    Precondiciones: No hay empate en cantidad entre los dos códigos de armas dados.
+    Parámetros:
+    * codArma1 : Número - Código del primer arma entre las cuales se describe a la más abundante.
+    * codArma2 : Número - Código de la segunda arma entre las cuales se describe a la más abundante.
+    Tipo: Número.
+  */
+  /*
+    elegir codArma1 si la cantidad de armas de código codArma1 es mayor a la de codArma2
+    y codArma2 si no.
+  */
+  return(choose codArma1 when(
+                  cantidadDeArmasDeCódigo_(codArma1) >
+                  cantidadDeArmasDeCódigo_(codArma2))
+                codArma2 otherwise
+  )
+}
+
+function cantidadDeArmasDeCódigo_(codArma) {
+  /*
+    Propósito: Describe la cantidad de armas de código codArma en el tablero.
+    Precondiciones: Ninguna.
+    Parámetros:
+    * codArma : Número - Código de arma para el cual se describe su cantidad en el tablero.
+    Tipo: Número.
+    Observación: Recorrido de acumulación sobre armas, contando las del código dado.
+  */
+  IrAPrimerArma...
+  cantidadDeArmasPorAhora := unoSi_OCeroSiNo(armaAquí() == codArma)
+  while(haySiguienteArma...) {
+    IrASiguienteArma...
+    cantidadDeArmasPorAhora := cantidadDeArmasPorAhora +
+      unoSi_OCeroSiNo(armaAquí() == codArma)
+  }
+  return(cantidadDeArmasPorAhora)
+}
+
+3)
+
+La solución no es adecuada porque usa programación a la defensiva
+(el if no es necesario porque la condición es una precondición).

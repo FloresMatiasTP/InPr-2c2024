@@ -1,0 +1,337 @@
+program{
+    return (
+            //stockTotalEn_DeComputadorasConAlMenos_(compumundo(),9000)
+            //puedoComprarAlgoEn_DeMarca_Con_(compumundo(), Gaxio, 250) 
+            //computadorasEnStockDe_EnLaLocalidad_(compumundo(), "Bernal")
+            computadorasEn_QueSeVendenEn_YTienenSpecs_(compumundo(), "Quilmes", 4000, 2000)
+            
+        )
+}
+
+type Marca is variant {
+/*
+PROPÓSITO: Modela marcas de computadoras.
+*/
+case Panafonics {}
+case Gaxio {}
+case Sonby {}
+case Lebovo {}
+case HB {}
+}
+
+type Computadora is record {
+/*
+PROPÓSITO: Modela una computadora.
+INVARIANTES DE REPRESENTACIÓN:
+* La memoria, el cpu, el precio son números mayores a cero.
+* El código de venta es un número mayor a cero.
+*/
+field códigoDeVenta // Número
+field marca // Marca
+field memoria // Número - La cantidad de memoria RAM en MB.
+field cpu // Número - La velocidad del CPU en MHz.
+field precio // Número - El precio en dólares.
+}
+
+type Local is record {
+/*
+PROPÓSITO: Modela uno de los locales de la cadena de venta
+INVARIANTES DE REPRESENTACIÓN:
+* código es mayor a cero y localidad no está vacío
+*/
+field código // Número - Un código único para el local
+field localidad // String - La localidad donde se encuentra el local.
+field computadorasEnStock // [Número] - Las computadoras disponibles en el local, identificadas por su código. Puede contener duplicados (una vez por unidad).
+}
+
+type CadenaDeVenta is record {
+/*
+PROPÓSITO: Modela la cadena de Compumundo Hiper Mega Red
+INVARIANTES DE REPRESENTACIÓN:
+* Ninguna
+*/
+
+field locales // [Local] - Los locales de la cadena.
+field computadoras // [Computadora] - Las computadoras que vende la cadena.
+}
+
+
+function compumundo(){
+        return (
+                CadenaDeVenta(
+                                locales <- [
+                                                Local(
+                                                        código   <- 1  ,                                 // Número - Un código único para el local
+                                                        localidad <- "Quilmes",                          // String - La localidad donde se encuentra el local.
+                                                        computadorasEnStock <- [ 1001,1001,1001,1002 ]     //[numero] codigo de venta
+                                                ),
+                                                Local(
+                                                        código   <- 2  ,                                 // Número - Un código único para el local
+                                                        localidad <- "Bernal",                          // String - La localidad donde se encuentra el local.
+                                                        computadorasEnStock <- [ 1001,1002,1002 ]     //[numero] codigo de venta
+                                                ),
+                                                Local(
+                                                        código   <- 3  ,                                 // Número - Un código único para el local
+                                                        localidad <- "Bernal",                          // String - La localidad donde se encuentra el local.
+                                                        computadorasEnStock <- [ 1001,1002,1003 ]     //[numero] codigo de venta
+                                                )
+                                    ] ,           // [Local] - Los locales de la cadena.
+                                    
+                                    computadoras <- [
+                                                        Computadora(
+                                                                    códigoDeVenta   <-  1001,           // Número
+                                                                    marca           <-  Panafonics,     // Marca
+                                                                    memoria         <-  8000 ,           // Número - La cantidad de memoria RAM en MB.
+                                                                    cpu             <-  3000 ,           // Número - La velocidad del CPU en MHz.
+                                                                    precio          <-  300             // Número - El precio en dólares.
+                                                        ),
+                                                        Computadora(
+                                                                    códigoDeVenta   <-  1002,           // Número
+                                                                    marca           <-  Gaxio,     // Marca
+                                                                    memoria         <-  8000 ,           // Número - La cantidad de memoria RAM en MB.
+                                                                    cpu             <-  3500 ,           // Número - La velocidad del CPU en MHz.
+                                                                    precio          <-  350             // Número - El precio en dólares.
+                                                        ),
+                                                        Computadora(
+                                                                    códigoDeVenta   <-  1003,           // Número
+                                                                    marca           <-  Sonby,     // Marca
+                                                                    memoria         <-  9000 ,           // Número - La cantidad de memoria RAM en MB.
+                                                                    cpu             <-  3000 ,           // Número - La velocidad del CPU en MHz.
+                                                                    precio          <-  400            // Número - El precio en dólares.
+                                                        )
+                                    ]   // [Computadora] 
+                                    
+                    )
+        )
+}
+
+/*
+
+Ejercicio 1)
+Se desea realizar la función marcasEn_QuePuedenEncontrarseEn_(cadenaDeVentas, localidad)
+que, dada una cadena de venta y un string que es una localidad, describe la lista de marcas que
+pueden encontrarse en esa localidad, sin repetidos.
+
+-Que tengo que hacer?
+
+
+1-  Consigo los locales de la cadena que son de la localida 
+    localesDe_QueEstanEn_(cadenaDeVentas, localidad)
+    filtro
+2-  conseguir todos los codigos de venta de las computadoras de esos locales
+    codigosDeComputadorasEn_ (lista de locales)
+3-  conseguir las computadoras para cada codigo de venta
+    computadorasDe_ConCodigos_(cadenaDeVentas, codigos de ventas)
+4-  conseguir las marcas para cada computadora
+    MarcasDeComputadorasEn_
+5-  saco los duplicados
+    filtro
+*/
+
+function localesDe_QueEstanEn_(cadenaDeVentas, localidad) {
+    /*
+    Tipo: lista de locales
+    Obs: es un recorrido de filtro sobre los locales de la cadena filtrando los que no son de la localidad dada
+    */
+    listaDeLocalesDeLaLocalidadPorAhora := []
+    foreach local in locales(cadenaDeVentas) {
+    listaDeLocalesDeLaLocalidadPorAhora := listaDeLocalesDeLaLocalidadPorAhora ++  singular_Si_(local, elLocal_estaEnLaLocalidad_(local, localidad))
+    }
+    return(
+            listaDeLocalesDeLaLocalidadPorAhora
+    )
+}
+
+
+function elLocal_estaEnLaLocalidad_(localActual, localidad){
+    /*
+    */
+    return (
+            localidad(localActual) == localidad
+    )
+}
+
+function codigosDeComputadorasEn_(listaDeLocales){
+    /*
+        Tipo: lista de codigos de computadoras
+        Obs: es un recorrido de transformacion
+    */
+    listaTransformadaACodigosDeComputadoras := []
+    foreach local in listaDeLocales {
+                    listaTransformadaACodigosDeComputadoras := listaTransformadaACodigosDeComputadoras  ++  computadorasEnStock(local)
+  
+    }
+    
+    return (
+            listaTransformadaACodigosDeComputadoras
+    )
+}
+
+// ahora solo tengo una lista de codigos a esa lista la tengo que transformar en lista de computadoras
+
+function computadorasDe_ConCodigos_(cadenaDeVentas, listaDeCodigosDeVentas){
+    /*
+    Tipo: lista de computadoras
+    Obs: puedo filtrar todas y me quedo solo con las que son las del codigo de venta
+        o puedo transformar la lista de codigos en una lista de computadoras
+    */
+    computadorasConCodigos := []
+    foreach computadora in computadoras(cadenaDeVentas) {
+    computadorasConCodigos := computadorasConCodigos ++ singular_Si_(computadora, contiene_A_(listaDeCodigosDeVentas, códigoDeVenta(computadora)))
+  
+  }
+  return(computadorasConCodigos)
+}
+    
+
+
+function marcasDeComputadorasEn_(listaDeComputadoras){
+    /*
+    Tipo: lista de marcas
+    Obs es un recorrido de transformacion
+    */
+    listaDeMarcas := []
+    foreach computadora in listaDeComputadoras {
+            listaDeMarcas := listaDeMarcas  ++  [marca(computadora)]
+  
+    }
+  return(sinDuplicados_(listaDeMarcas))
+}
+
+
+/*
+Ejercicio 2)
+Se desea realizar una función stockTotalEn_DeComputadorasConAlMenos_(cadenaDeVentas,
+minimoDeRAM) que, dada una cadena de ventas y un número que describe el mínimo de RAM en
+MB que se desea, se quiere saber cuántas computadoras hay en stock en la cadena que tengan ese
+mínimo de RAM.
+
+tengo la cadena de ventas completa, eso me da una lista de computadoras y de esa lista filtro las que tienen 
+
+*/
+
+
+function listaDeCodigosDeComputadorasEnStockEn_(cadenaDeVentas){
+    /*
+    */
+    return (
+            codigosDeComputadorasEn_(locales(cadenaDeVentas))
+    )
+}
+
+
+function computadorasEnStockEnCadena_conCodigos_(cadenaDeVentas, listaDeCodigos){
+   
+    listaDeComputadorasPorAhora := []
+    foreach codigo in listaDeCodigos {
+    listaDeComputadorasPorAhora := listaDeComputadorasPorAhora ++  [laComputadoraDe_conCodigo_(cadenaDeVentas, codigo)]
+    }
+  return(listaDeComputadorasPorAhora)
+}
+
+
+
+function laComputadoraDe_conCodigo_(cadenaDeVentas, codigo){
+    /*
+    busqueda sabiendo que esta sobre las computadas de cadena de venta describiendo la que tiene el codigo dado
+    */
+    listaDeComputadoras := computadoras(cadenaDeVentas)
+    while( códigoDeVenta(primero(listaDeComputadoras)) /= codigo){
+                listaDeComputadoras := resto(listaDeComputadoras)
+    }
+  return(
+      primero(listaDeComputadoras)
+  )
+}
+
+function stockTotalEn_DeComputadorasConAlMenos_(cadenaDeVentas,minimoDeRAM){
+    /*
+    Tipo numero
+    obs: recorrido de acumulacion
+    */
+    contador := 0
+    foreach computadora in computadorasEnStockEnCadena_conCodigos_(cadenaDeVentas, listaDeCodigosDeComputadorasEnStockEn_(cadenaDeVentas)) {
+    contador := contador  + unoSi_CeroSiNo(memoria(computadora) >= minimoDeRAM)
+  
+  }
+  return(contador)
+}
+    
+/*
+Ejercicio 3)
+Se desea realizar puedoComprarAlgoEn_DeMarca_Con_(cadenaDeVentas, marca,
+dineroDisponible), una función que, dada una cadena de ventas, una marca y un número que
+representa lo que el comprador tenga disponible como tope a gastar en dólares, indique si hay
+alguna computadora en la cadena de ventas de esa marca que pueda comprarse con ese dinero.
+*/
+
+function puedoComprarAlgoEn_DeMarca_Con_(cadenaDeVentas, marca, dineroDisponible) {
+    /*
+    booleano
+    busqueda sin saber
+    */
+    listaRestante := computadorasEnStockEnCadena_conCodigos_(cadenaDeVentas, listaDeCodigosDeComputadorasEnStockEn_(cadenaDeVentas))
+    while(not esVacía(listaRestante) && not esComputadora_DeMarca_ConValorMinimo_(primero(listaRestante), marca, dineroDisponible)){
+    listaRestante := resto(listaRestante)
+  
+  }
+  return(not esVacía(listaRestante))
+}
+    
+function esComputadora_DeMarca_ConValorMinimo_(computadoraAEvaluar, marca, dineroDisponible){
+    /*
+    */
+    return (
+            marca(computadoraAEvaluar) == marca && precio(computadoraAEvaluar) <= dineroDisponible
+    )
+}
+
+/*
+Ejercicio 4)
+Se desea realizar una función computadorasEn_QueSeVendenEn_YTienenSpecs_(cadenaDeVentas, localidad, mínimoCPU,
+mínimoMemoria) que, dada una cadena de ventas, una localidad y dos números que representan un
+mínimo de CPU y de memoria, describe las máquinas de la cadena que tienen al menos esa cantidad
+de CPU y al menos esa cantidad de memoria, y se encuentran en stock en algún local de la localidad
+dada..
+*/
+
+
+function computadorasEn_QueSeVendenEn_YTienenSpecs_(cadenaDeVentas, localidad, mínimoCPU, mínimoMemoria) {
+    /*
+    Tipo: lista de computadoras
+    Obser: Filtro
+    */
+    listaDeComputadorasPorAhora := computadorasEnStockDe_EnLaLocalidad_(cadenaDeVentas, localidad)
+    listaDeComputadorasFiltradaPorAhora := []
+    foreach computadora in listaDeComputadorasPorAhora{
+    listaDeComputadorasFiltradaPorAhora := listaDeComputadorasFiltradaPorAhora ++ singular_Si_
+                                            (computadora, 
+                                            laComputadoras_tieneIgualOMas_deCpuEIgualOMas_DeMemoria(computadora, mínimoCPU, mínimoMemoria)
+                                            )
+  
+  }
+  return(listaDeComputadorasFiltradaPorAhora)
+}
+    
+
+function laComputadoras_tieneIgualOMas_deCpuEIgualOMas_DeMemoria (computadora, mínimoCPU, mínimoMemoria){
+    /*
+    Tipo: booleano
+    */
+    return (
+            cpu(computadora) >= mínimoCPU && memoria(computadora) >= mínimoMemoria
+    )
+}
+
+
+function computadorasEnStockDe_EnLaLocalidad_(cadenaDeVentas, localidad){
+    /*
+    Tipo: lista de computadoras
+    */
+    return (
+            computadorasEnStockEnCadena_conCodigos_(cadenaDeVentas, codigosDeComputadorasEn_(localesDe_QueEstanEn_(cadenaDeVentas, localidad)))
+    
+    )
+}
+
+

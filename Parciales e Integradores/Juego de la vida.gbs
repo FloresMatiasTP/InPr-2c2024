@@ -1,0 +1,184 @@
+    /*
+        Prop:
+        Preco:
+        Tipo:
+        Paremetro:
+    */
+    -------------------------------------  EJERCICIO 1 -----------------------------------
+function esCelulaViva(){
+    /*
+        Prop:Indica si la celula de la celda actual esta viva
+        Preco:ninguna
+        Tipo:Booleano
+        Paremetro:ninguno
+        Obs:Las celulas se representan con bolitas verdes
+    */
+    return(hayBolitas(Verde))
+}
+-------------------------------------  EJERCICIO 2 -----------------------------------
+function nroDeVecinasVivas(){
+    /*
+        Prop:Describir la cantidad de celulas vivas vecinas de la ceulula actual 
+        Preco:Ninguna
+        Tipo:Nnumero
+        Paremetro:ninguno
+    */    
+    return(cantidadDeCelulasVivasVecinasEnOrtogonal() + cantidadDeCelulasVivasVecinasEnDiagonal())
+}
+
+function cantidadDeCelulasVivasVecinasEnOrtogonal(){
+    /*
+        Prop:Describir la cantidad de celulas vivas vecinas hacia de la ceulula actual hacia las direcciones ortogonales
+        Preco:El caebzal debe estar sobre una celula viva
+        Tipo:Numero
+        Observacion: Es un recorrido de acumulacion  
+                     sobre las celdas ortogonales de la celda actual
+                     contando las celulas vivas que son vecinas a la celula actual
+    */    
+     dirActual := minDir()
+    nroDeCelulasVecinas := 0
+        while (dirActual/= maxDir() ){
+            nroDeCelulasVecinas := nroDeCelulasVecinas + unoSi_CeroSiNo (hayCelulaVivaAl_(dirActual) )
+            dirActual := siguiente(dirActual)
+        }
+        return (nroDeCelulasVecinas + unoSi_CeroSiNo (hayCelulaVivaAl_(dirActual))
+}
+
+function hayCelulaVivaAl_(dirActual){
+    /*
+        Prop:Indicar si hay una celula viva hacia el *dirActual*
+        Preco:ninguna
+        Tipo:Booleano
+        Paremetro:*dirActual*: Direccion - Es la direccion hacia donde verifica
+    */
+    return(puedeMover(dirActual) && hayCelulaVivaEnCeldaAl_(dirActual) )
+}
+
+function hayCelulaVivaEnCeldaAl_(dir){
+     /*
+        Prop:Indicar si hay una celula viva hacia el *dirActual*
+        Preco:Debe haber al menos una celda en direccion hacia el *dirActual* de la celda actual
+        Tipo:Booleano
+        Paremetro:*dirActual*: Direccion - Es la direccion hacia donde verifica que haya una celula viva
+    */
+    Mover(dir)
+    return(esCelulaViva())
+}
+function cantidadDeCelulasVivasVecinasEnDiagonal(){
+     /*
+        Prop:Describir la cantidad de celulas vivas vecinas hacia de la ceulula actual hacia las direcciones ortogonales
+        Preco:El caebzal debe estar sobre una celula viva
+        Tipo:Numero
+        Observacion: Es un recorrido de acumulacion  
+                     sobre las celdas lindantes diagonales de la celda actual
+                     contando las celulas vivas que son vecinas a la celula actual
+                                      
+    */    
+    dirActual :=  minDir()
+    nroDeCelulasVecinasDiagonales := 0
+        while (dirActual/= maxDir() ){
+            nroDeCelulasVecinasDiagonales := nroDeCelulasVecinasDiagonales + unoSi_CeroSiNo (hayCelulaVivaEnDiagonalAl_YAl_(dirActual,siguiente(dirActual)) )
+            dirActual := siguiente(dirActual)
+        }
+        return (nroDeCelulasVecinasDiagonales + unoSi_CeroSiNo (hayCelulaVivaAl_(dirActual)))
+}
+function hayCelulaVivaEnDiagonalAl_YAl_(dir1,dir2){
+    /*
+        Prop:Indicar si hay una celula viva hacia la diagonal al  *dirPrincipal* y *dirSecundaria* de la celda actual
+        Preco:  *dirPrincipal* y *dirSecundaria* no deben er iguales ni opuestas
+        Tipo:Booleano
+        Paremetro: *dirPrincipal* y *dirSecundaria*: Direccion - Es la direccion hacia donde verifica que haya una celula viva
+    */
+     return((puedeMoverEnDiagonalAl_Y_(dirPrincipal,dirSecundaria) && hayCelulaVivaEnCeldaAl_YAl_( dirPrincipal,dirSecundaria) )
+}
+
+function hayCelulaVivaEnCeldaAl_YAl_(dirPrincipal,dirSecundaria){
+    /*
+        Prop:Indicar si hay una celula viva en la celda  diagonal al  *dirPrincipal* y *dirSecundaria* de la celda actual
+        Preco:Debe haber al menos una celda en direccion hacia el *dirPrincipal* y *dirSecundaria*  de la celda actual
+             -  *dirPrincipal* y *dirSecundaria* no deben er iguales ni opuestas
+        Tipo:Booleano
+        Paremetro: *dirPrincipal* y *dirSecundaria*: Direccion - Es la direccion hacia donde verifica que haya una celula viva
+    */
+    MoverEnDiagonalHacia_Y_(dirPrincipal,dirSecundaria)
+    return(esCelulaViva())
+
+}
+-------------------------------------  EJERCICIO 3 -----------------------------------
+procedure PrepararCelulaActual(){
+/*
+        Prop: Aplicar las pautas del juego a la celula actual
+        Preco:El cabezal debe estar sobre una celula viva
+    */    
+    if(nroDeVecinasVivas <2){
+        MarcarCelulaParaSerEliminada()
+    }else if(nroDeVecinasVivas > 3){
+        MarcarCelulaParaSerEliminada()
+    }else if(not esCelulaViva() && nroDeVecinasVivas == 3){
+        MarcarCelulaParaSerReanimada()
+    }
+    
+}
+-------------------------------------  EJERCICIO 4 -----------------------------------
+
+procedure CompletarElPróximoTick(){
+    /*
+        Prop: Leer todas las marcas y procesar cada una de las marcas
+        Preco:ninguna
+    */
+    MarcarTodasLasCelulasVivasDelTablero()
+    ProcesarLasCelulasDelTablero()
+    
+}
+procedure MarcarTodasLasCelulasVivasDelTablero(){
+    /*
+        Pop:Marcar todas las celulas del tablero
+        Prec: ninguna
+        Obs: Es un recorrido de procesamiento sobre las celdas del tablero
+             marcandotodas las celulas vivas del talero segun las pautas del juego
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    PrepararCelulaActual()
+    while(haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)  ){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_()
+        PrepararCelulaActual()
+    }
+}
+procedure ProcesarLasCelulasDelTablero(){
+    /*
+        Pop:Procesar todas las celulas  del tablero
+        Prec: ninguna
+        Obs: Es un recorrido de procesamiento sobre las celdas del tablero
+             proceando todas las celulas vivas del talero segun las pautas del juego para realizar el tick
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    ProcesarCelulaActual()
+    while(haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)  ){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+        ProcesarCelulaActual()
+    }
+}
+procedure ProcesarCelulaActual(){
+    /*
+        Prop: Procesar la celula actual para ser reanimada o ser eliminada del tablero
+        Prec:ninguna
+    */
+    if(estáMarcadaParaSerEliminada() ){
+        EliminarCélula()
+    }else if(estáMarcadaParaSerReanimada()){
+        ReanimarCélula()
+    }
+}
+-------------------------------------  EJERCICIO 5 -----------------------------------
+procedure Simular_Ticks(cantidad){
+    /*
+        Prop: Simular *cantidad* ticks en el universo actual
+        Precondicion: Ninguna
+        Parametro: **cantidad**: Numero: Es la cantidad de veces que se van a simular los ticks sobre el universo actual
+        Obs: el universo es representado por el tablero actual
+    */
+    repeat(cantidad){
+        CompletarElPróximoTick()
+    }
+}
+

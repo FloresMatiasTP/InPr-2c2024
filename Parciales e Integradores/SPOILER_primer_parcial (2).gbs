@@ -1,0 +1,294 @@
+/*
+hayFicha()
+PROPÓSITO: Indica si hay una ficha en la celda actual.
+TIPO: Booleano.
+PRECONDICIÓN: Ninguna.
+
+
+colorFicha()
+PROPÓSITO: Describe el color de la ficha en la celda actual.
+TIPO: Color.
+PRECONDICIÓN: Hay una ficha en la celda actual.
+
+
+PonerFicha_EnTopeDeColumna(colorDeFicha)
+PROPÓSITO: Coloca una nueva ficha del color dado en la celda más al Norte de la columna actual.
+PRECONDICIÓN: El cabezal debe estar en la celda más al Norte de la columna actual y la misma debe estar vacía.
+
+
+CaerFicha_(colorDeFicha)
+PROPÓSITO: Mueve la ficha del color dado de la celda actual a la celda lindante al Sur, dejando el cabezal en la celda al Sur.
+PRECONDICIÓN: Debe haber una ficha del color dado en la celda actual. La celda al Sur debe existir y estar vacía. 
+
+
+hayCuatro_EnLineaEnDiagonalAl_(colorFicha, dirPrincipal, dirSecundaria)
+PROPÓSITO: Indica si hay cuatro fichas de color “colorFicha” en linea, contando desde la celda actual, en diagonal hacia las direcciones dadas.
+TIPO: Booleano.
+PRECONDICIÓN: Las direcciones no son opuestas ni iguales.
+*/
+
+// Ejercicio 1
+
+function hayCuatro_EnLinea(colorDeFicha) {
+    /*
+        PROPÓSITO:  Indica si hay cuantro fichas en linea del color dado
+            en algun lugar del tablero.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Ninguna.
+        OBSERVACIONES: Recorrido es un recorrido de busqueda por todo el tablero,
+            buscando 4 en linea del color dado.
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este,Norte)
+
+    while( not hayCuatro_EnLineaAcá(colorDeFicha) && 
+        haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)  ) {
+        
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+
+    return (hayCuatro_EnLineaAcá(colorDeFicha))
+
+}
+
+
+function hayCuatro_EnLineaAcá(colorDeFicha) {
+    /*
+        PROPÓSITO:  Indica si hay cuantro fichas en linea del color dado
+            en la celda actual.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Ninguna.
+        OBSERVACIONES: Recorrido de busqueda sobre direcciones,
+            buscando 4 en linea del color dado en alguna de las direcciones
+            ortogonales o diagonales.
+    */
+
+    direccionARecorrer := minDir()
+
+    while( maxDir() /= direccionARecorrer  
+        && not hayCuatro_EnLineaOrtogalODiagonalAl_(colorDeFicha, direccionARecorrer) ) {
+
+        direccionARecorrer := siguiente(direccionARecorrer)
+
+    }
+
+    return(hayCuatro_EnLineaOrtogalODiagonalAl_(colorDeFicha, direccionARecorrer))
+
+}
+
+function hayCuatro_EnLineaOrtogalODiagonalAl_(colorDeFicha, direccion) {
+    /*
+        PROPÓSITO: indica si hay 4 fichas en linea del color dado en 
+            la direccion dada y la diagonal con la siguiente de la direccion dada, 
+            partiendo de la posicion actual.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+            * direccion: Direccion - la direccion en la que evaluamos si hay 4 en linea.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Ninguna
+    */
+    
+    return (
+        hayCuatro_EnLineaEnDiagonalAl_Y_(colorDeFicha, direccion, siguiente(direccion)) 
+        || hayCuatro_EnLineaEnOrtogonalAl_(colorDeFicha, direccion)
+    )
+}
+
+function hayCuatro_EnLineaEnOrtogonalAl_(colorDeFicha, direccion) {
+    /*
+        PROPÓSITO: indica si hay 4 fichas en linea del color dado en 
+            la direccion dada y la diagonal con la siguiente de la direccion dada, 
+            partiendo de la posicion actual.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+            * direccion: Direccion - la direccion en la que evaluamos si hay 4 en linea.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Ninguna
+    */
+    
+    return (cantidadDeFichasEnLineaDe_Al_(colorDeFicha, direccion) >= 4)
+}
+
+function cantidadDeFichasEnLineaDe_Al_(colorDeFicha, direccion) {
+    /*
+        PROPÓSITO: describe la cantidad de fichas en linea del color dado
+            a la direccion dada partiendo de la posicion actual.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+            * direccion: Direccion - la direccion en la que evaluamos si hay 4 en linea.
+        TIPO: Numero
+        PRECONDICIONES:
+            * Ninguna
+        OBSERVACIONES: Recorrido de acumulacion y busqueda por las celdas una fila o columna.
+            contantando fichas del color dado y buscando una ficha de color
+    */
+    
+    cantidadDeFichasEnLineaHastaAhora := 
+        unoSi_CeroSino(hayFicha() && colorFicha() == colorDeFicha)
+
+    while( hayFicha_Al_(colorDeFicha ,direccion) ) {
+        Mover(direccion)
+        cantidadDeFichasEnLineaHastaAhora := cantidadDeFichasEnLineaHastaAhora
+            + unoSi_CeroSino(hayFicha() && colorFicha() == colorDeFicha)
+
+    } 
+
+    return (cantidadDeFichasEnLineaHastaAhora)
+}
+
+function hayFicha_Al_(colorDeFicha, direccion) {
+    /*
+        PROPÓSITO:  indica si hay una celda en la direccion dada y dicha celda
+            tiene una ficha del color dado.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+            * direccion: Direccion - la direccion en la que evaluamos si hay una ficha
+                en la celda lindante a la direccion dada
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Ninguna
+    */
+    
+    return (puedeMover(direccion) && hayFichaDeColor_EnCeldaAl_(colorDeFicha, direccion))
+}
+
+function hayFichaDeColor_EnCeldaAl_(colorDeFicha, direccion) {
+    /*
+        PROPÓSITO:  indica hay una ficha del color dado en la celda lindante a la
+            direccion dada desde la celda actual.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de las fichas a evaluar.
+            * direccion: Direccion - la direccion en la que evaluamos si hay una ficha
+                en la celda lindante a la direccion dada
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Debe existir al menos una celda en la direccion dada desde la celda actual.
+    */
+    Mover(direccion)
+    return (hayFicha() && colorFicha() == colorDeFicha)
+}
+
+// Ejercicio 2
+
+function columnaGanadoraPara_(colorDeFicha) {
+    /*
+        PROPÓSITO: describe el numero de la columna en 
+            la que el jugador pone una ficha del color 
+            dado y gana el juego.
+        PARÁMETROS:
+            * colorDeFicha: Color - el color de la ficha del jugador
+                que esta por ganar el juego.
+        TIPO: Numero
+        PRECONDICIONES:
+            * Debe exitir al menos una columna con una ubicacion
+             disponible para colocar una ficha del color dado y 
+             ganar el juego.
+            * El juego no debe tener un ganador.
+        OBSERVACIONES: Recorrido de busqueda sobre las columnas 
+            del tablero, buscando la columna donde agregar una ficha
+            del color dado termina el juego y lo da por ganador.
+    */
+    
+    IrAlBorde(Oeste)
+    
+    while(not esColumnaGanadoraDe_(colorDeFicha)) {
+        Mover(Este)
+    }
+
+    return (cordenadaX())
+}
+
+function esColumnaGanadoraDe_(colorDeFicha) {
+    /*
+        PROPÓSITO:  indica si agregando una ficha del color dado 
+            en la columna actual gana el jugador de ese color.
+        PARÁMETROS:
+            * colorDeFicha: Color - color de la ficha a evaluar
+                si al ponerla en la columna actual gana la partida.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Ninguna
+    */
+
+    IrAlBorde(Norte)
+    
+    return (not hayFicha() && esColumnaGanadoraAgregandoFichaDe_())
+}
+
+function esColumnaGanadoraAgregandoFichaDe_(colorDeFicha) {
+    /*
+        PROPÓSITO: indica si agregando una ficha del color dado 
+            en la columna actual gana el jugador de ese color.
+        PARÁMETROS:
+            * colorDeFicha: Color - color de la ficha a evaluar
+                si al ponerla en la columna actual gana la partida.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * La celda actual debe estar debe estar vacia y debe ser
+            la celda mas al norte de la columna.
+    */
+    PonerFicha_EnTopeDeColumna(colorDeFicha)
+    SoltarFicha_()
+    return (hayCuatro_EnLinea(colorDeFicha))
+}
+
+procedure SoltarFicha() {
+    /*
+        PROPÓSITO: deja caer la ficha en la celda actual 
+            hasta que se tope con otra o con el fin del tablero.
+        PRECONDICIONES:
+            * Hay una ficha en la celda actual.
+        OBSERVACIONES: Recorrido de procesamiento y busqueda sobre las 
+            celdas de la columna actual.
+    */
+
+    while(puedeMover(Sur) && not hayFichaEnCeldaAl_(Sur)) {
+        CaerFicha_(colorFicha())
+    }
+}
+
+function hayFichaEnCeldaAl_(direccion) {
+    /*
+        PROPÓSITO: indica si hay una ficha de cualquier color
+            en la celda lindante a la direccion dada.
+        PARÁMETROS:
+            * direccion: Direccion - la direccion de la celda lindante
+                a la posicion actual a evaluar si tiene alguna ficha.
+        TIPO: Booleano
+        PRECONDICIONES:
+            * Debe existir al menos una celda en la direccion dada
+                desde la celda actual.
+    */
+    Mover(direccion)
+    return (hayFicha())
+}
+
+// Ejercicio 3
+
+procedure CaerFicha_(colorDeFicha) {
+    /*
+    PROPÓSITO: Mueve la ficha del color dado de la celda actual a la celda
+        lindante al Sur, dejando el cabezal en la celda al Sur.
+    PARÁMETROS:
+      * colorDeFicha: Color - El color de la ficha a hacer caer.
+    PRECONDICIÓN:
+      * Debe haber una ficha del color dado en la celda actual.
+      * La celda al Sur debe existir y estar vacía.
+    */
+    SacarRepresentaciónDe_(colorDeFicha) // Asuma existe y está bien implementada
+    Mover_SiPuede(Sur)
+    PonerRepresentaciónDe_(colorDeFicha) // Asuma existe y está bien implementada
+}
+/*
+El procedimiento funciona, peroooo ...
+Esta mal implementado porque esta programando a la defensiva usando Mover_SiPuede,
+ya que las precondiciones ya indica que existe una celda lindante al Sur 
+y esta vacia.
+*/

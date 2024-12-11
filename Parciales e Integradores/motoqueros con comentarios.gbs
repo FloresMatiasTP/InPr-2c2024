@@ -1,0 +1,332 @@
+
+/*
+Leer el contexto: el tablero ahora es una CONVENCION, que tiene  MOTOQUEROS  los cuales se representan por celdas, 
+los motoqueros al inteactuar se asocian a CLUBES.Los motoqueros son VECINOS  si estan lindantes con otro en las 4 celdas ORTOGONALES.
+Los CLUBES SE ARMAN         con motoqueros conectados entre si (vecinos entre si)
+Los CLUBES DE IDENTIFICAN   con Numeros consecutivos 
+
+################################## PRIMITIVAS DISPONIBLES  #############################################################
+
+● elMotoqueroPerteneceAUnClub()
+PROPÓSITO: Indica si el motoquero actual
+pertenece a algún club.
+PRECONDICIÓN: Hay un motoquero en la celda
+actual.
+TIPO: Booleano.
+
+● clubAlQuePerteneceUnMotoquero()
+PROPÓSITO: Describe el número del club al cual
+pertenece el motoquero actual.
+PRECONDICIÓN: Hay un motoquero en la celda
+actual y pertenece a un club.
+TIPO: Número.
+
+● IncluirEnElClubNúmero_(númeroDeClub)
+PROPÓSITO: Incluye al motoquero actual como
+perteneciente al club con el número dado.
+PRECONDICIÓN: Hay un motoquero en la celda
+actual y el mismo no pertenece todavía a ningún
+club.
+PARÁMETROS: númeroDeClub - Número. El
+número de club en el cual incluir al motoquero
+
+● hayMotoqueroAcá()
+PROPÓSITO: Indica si hay un motoquero en la
+celda actual.
+PRECONDICIÓN: Ninguna.
+TIPO: Booleano.
+
+##############################################EJERCICIO 1   ####################################################################
+
+Realizar la función cantidadDeClubesEnLaConvención() que determine la cantidad total de
+clubes de motoqueros que hay en la convención.
+Para ello se propone una estrategia top-down para contar los clubes que consiste en recorrer motoqueros sin club,
+asignando un número de club distinto y consecutivo a cada uno de los motoqueros sin club y todos los motoqueros
+conectados a este. El último número de club asignado debería permitir determinar la cantidad de clubes totales.
+Para esto se propone realizar las siguientes funciones y procedimientos (aunque pueden requerirse o ser útil
+algunos adicionales):
+
+Ejercicio a) La función hayMotoqueroSinClub() que indica si en la convención hay algún motoquero
+que todavía no tenga un club.
+
+Ejercicio b) El procedimiento IrAMotoqueroSinClub() que, asumiendo que hay un motoquero sin
+club, deja el cabezal sobre el mismo.
+
+Ejercicio c) El procedimiento AsignarClub_AMotoquerosConectados(númeroDeClub) que dado un
+número de club, asigna al motoquero actual y a todos los motoqueros conectados a este, como
+pertenecientes al dicho club. Se puede asumir que estos motoqueros no tienen un club asignado.
+Este problema es a su vez complejo, y se propone la siguiente estrategia para solucionarlo. Notar que
+algunas subtareas en los ítems a continuación pueden ser útiles para solucionar este problema.
+
+■ Paso 1, marcar al motoquero actual como perteneciente al club dado.
+
+■ Paso 2, buscar en la convención algún motoquero sin club que tenga como vecino un motoquero del
+club dado e ir hasta el mismo.
+
+■ Repetir sucesivamente los pasos 1 y 2 hasta que no haya más motoqueros en la convención que
+sean vecinos de otros con el club dado.
+
+Ejercicio d) La función hayMotoqueroSinClubConVecinoEn_(númeroDeClub) que indica si en la
+convención hay algún motoquero sin club todavía que tenga de vecino otro motoquero que tenga por club
+númeroDeClub.
+
+Ejercicio e) IrHastaElMotoqueroSinClubConVecinoEn_(númeroDeClub) que posiciona el
+cabezal sobre un motoquero que no tenga club todavía y que tenga por vecino un motoquero en el club
+númeroDeClub.
+
+Que es lo primero que tengo que hacer despues de leer el enunciado?
+Pensar la estrategia, pero la estrategia ya fue planteada, es TOP-DOWN 
+Que tengo que hacer entonces?
+Escribir la funcion principal y documentarla 
+*/
+
+function cantidadDeClubesEnLaConvención() {
+    /* 
+        PROPÓSITO: Describe el número total de clubes
+            de la convención
+        TIPO: Número 
+        PRECONDICIONES: Ningun motoquero en la convención
+            tiene aún club asignado.
+        OBSERVACIONES: 
+            Es un recorrido de procesamiento con acumulación                                                                //Es Un Recorrido de....
+            sobre los motoqueros sin club de la convención (como precondicion se que ningun motoquero tiene club asignado)  //Sobre.....        
+            asignando un club incremental y consecutivo                                                                     //Haciendo...Esto describe mi subtarea
+            a cada motoquero sin club y todos sus conectados.
+    */
+    cantidadDeClubesAsignadosAlMomento := 0                                          //inicio Variable
+    while ( hayMotoqueroSinClub() ) {               //Sub1                           //condicion para repetir
+        IrAMotoqueroSinClub()                       //Sub2                           //Voy al elemento a procesar (ojo se recorren motoqueros sin club)
+        cantidadDeClubesAsignadosAlMomento :=                                        //incremento la variable en 1
+            cantidadDeClubesAsignadosAlMomento + 1
+        AsignarClub_AMotoquerosConectados(cantidadDeClubesAsignadosAlMomento) //Sub3 //Proceso, que consiste en asignar club a el motoquero 
+                                                                                     //actual y todos los conectados a el
+                                                                                     //no hay casoi de borde porque el while termina cuando no quedan
+                                                                                     //mas elementos sin procesar
+    }
+    return ( cantidadDeClubesAsignadosAlMomento )
+}
+
+//Ejercicio a) Sub 1
+/*
+
+Lo que se intenta es saber si en la convencion hay algun motoquero sin club, con que se encuentre uno es suficiente, es una busqueda
+pero hay que contemplar el caso que no exista ningun elemento buscado
+
+*/
+
+function hayMotoqueroSinClub() {
+    /* 
+        PROPÓSITO: Indica si en la convención hay un motoquero sin club.
+        TIPO: Booleano 
+        PRECONDICIONES: Ninguna
+        OBSERVACIONES:
+            Es un recorrido de busqueda sin saber si hay
+            sobre la celdas del tablero (ubicaciones de convención)
+            buscando si hay una celda que tenga motoquero sin club
+                (subtarea hayMotoqueroSinClubAcá())
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)              //Biblio          //El dominio del elemento a recorrer es Celdas de la convencion
+    while ( haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)    //Biblio
+            && not hayMotoqueroSinClubAcá()) {                  //Sub 1a)
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+    return (hayMotoqueroSinClubAcá())
+}
+//Ejercicio  C) Sub 2
+/*
+Esta procedimiento lo uso para dejar el cabezal sobre un motoquero sin club, sabiendo ahora por la funcion anterior que hay, como este
+procedimniento sera invocado varias veces por la primer funcion (cantidadDeClubesEnLaConvención()) y esta funcion procesara cada motoquero
+sin club, cada vez que se imboque el cabezal se detendra en un motoquero distinto hasta que no queden motoqueros sin club
+*/
+procedure IrAMotoqueroSinClub() {
+    /* 
+        PROPÓSITO: Posiciona el cabezal en un motoquero sin club.
+        PRECONDICIONES: Hay un motoquero sin club en la convención
+        OBSERVACIONES:
+            Es un recorrido de busqueda sabiendo que está
+            sobre la celdas del tablero (ubicaciones de convención)
+            buscando si hay una celda que tenga motoquero sin club
+                (subtarea hayMotoqueroSinClubAcá())
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    while ( not hayMotoqueroSinClubAcá()) {                 //Sub 1a) 
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+}
+
+// Sub 1a) 
+
+function hayMotoqueroSinClubAcá() {
+    /*
+        PROPÓSITO: Indica si hay un motoquero en la celda
+            actual y además este no tiene un club.
+        TIPO: Booleano
+        PRECONDICIONES: Ninguna
+    */
+    return (hayMotoqueroAcá() && not elMotoqueroPerteneceAUnClub())  //Ver circuito Corto (poner delante lo que no es ambiguo)
+}
+
+//Ejercicio C)
+
+procedure AsignarClub_AMotoquerosConectados(númeroDeClub) {
+    /* 
+        PROPÓSITO: Asigna al motoquero sin club de la celda actual
+            y a todos sus conectados el club **númeroDeClub**.
+        PARÁMETROS:
+            * númeroDeClub : Número - El número de club a asignar
+        PRECONDICIONES:
+            * Hay un motoquero sin club en la celda actual.
+            * Los conectados al motoquero actual no tienen club
+            * númeroDeClub es mayor a cero
+            * No hay un club en la convención con númeroDeClub
+        OBSERVACIONES:
+            Es un recorrido de procesamiento
+            sobre motoqueros sin club que tengan de vecino un motoquero con el club **númeroDeClub**
+            haciendo asignandolos al club **númeroDeClub**
+    */
+    IncluirEnElClubNúmero_(númeroDeClub)                                     //Es Primitivo incluye al motoquero sin club actual
+                                                                             //como estoy sobre uno lo proceso, si no lo pierdo
+    while ( hayMotoqueroSinClubConVecinoEn_(númeroDeClub) ) {   //Sub 1C    // Es la condicion para repetir
+        IrHastaElMotoqueroSinClubConVecinoEn_(númeroDeClub)     //Sub 2C    // Ir al siguiente    
+        IncluirEnElClubNúmero_(númeroDeClub)                                //Proceso
+    }
+}
+
+//Sub 1C)
+
+function hayMotoqueroSinClubConVecinoEn_(númeroDeClub) {
+    /* 
+        PROPÓSITO: Indica si en la convención hay un motoquero
+            sin club que además tenga como vecino un motoquero
+            que tenga como club el número **númeroDeClub** 
+        Parametro: **numeroDeClub** Tipo: Numero- Numero con el cual indicar si hay un motoquero sin club vecino a un motoquero con el club dado
+        TIPO: Booleano 
+        PRECONDICIONES: Ninguna
+        OBSERVACIONES:
+            Es un recorrido de busqueda sin saber si hay
+            sobre la celdas del tablero (ubicaciones de convención)
+            buscando si hay una celda que tenga motoquero sin
+                club con un vecino con el club **númeroDeClub**
+                (subtarea hayMotoqueroSinClubConVecinoEn_Acá(númeroDeClub))
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    while ( haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+            && not hayMotoqueroSinClubConVecinoEn_Acá(númeroDeClub)) // Sub2 C) {
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+    return (hayMotoqueroSinClubAcá())
+}
+
+//Sub 2c)
+
+function IrHastaElMotoqueroSinClubConVecinoEn_(númeroDeClub) {
+    /* 
+        PROPÓSITO: Posiciona el cabezal en un motoquero
+            sin club que tenga por vecino un motoquero
+            que tenga el club **númeroDeClub**
+        PRECONDICIONES: Hay un motoquero sin club que tenga
+            por vecino un motoquero con el club **númeroDeClub**
+            en la convención
+        OBSERVACIONES:
+            Es un recorrido de busqueda sabiendo que está
+            sobre la celdas del tablero (ubicaciones de convención)
+            buscando si hay una celda que tenga motoquero sin
+                club con un vecino con el club **númeroDeClub**
+                (subtarea hayMotoqueroSinClubConVecinoEn_Acá(númeroDeClub))
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    while ( not hayMotoqueroSinClubConVecinoEn_Acá(númeroDeClub)) { //Sub 3C
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+}
+
+// Sub 3C
+
+hayMotoqueroSinClubConVecinoEn_Acá(númeroDeClub) {
+    /*
+        PROPÓSITO: Indica si hay un motoquero en la celda
+            actual y además este no tiene un club y además
+            tiene como vecino un motoquero con el número
+            de club **númeroDeClub**.
+        TIPO: Booleano
+        PRECONDICIONES: Ninguna
+    */
+    return (hayMotoqueroSinClubAcá() && hayVecinoConClub_(númeroDeClub)) //Circuito Corto hayVecinoConClub_(númeroDeClub) hay que crearla
+}
+
+/*
+Basicamente lo que hace esta funcion es devolver verdadero cuando desde la celda actual encuentro un motoquero sin club que este en 
+las ortogonales de la celda actual, una manera de complicar este ejercicio es contemplando tambien las diagonales, si fuera el caso
+se puede usar el recorrido del ejercicio 36 del TP9 para resolverlo. Como no se si hay un motoquero sin club en las ortogonales
+realizo una busqueda, sin saber si esta.
+
+*/
+function hayVecinoConClub_(númeroDeClub) {
+    /*
+        PROPÓSITO: Describe si hay un motoquero en las celdas vecinas
+            que tenga como club el número de club **númeroDeClub**
+        TIPO: Booleano
+        PRECONDICIONES: Ninguna
+        OBSERVACIONES: 
+            Es un recorrido de busquda sin saber
+            sobre direcciones
+            buscando si en alguna dirección hay en la celda vecina un motoquero con el club **númeroDeClub**
+            (Subtarea hayVecinoConClub_Hacia_)
+    */
+    direcciónActual := minDir()
+    while (direcciónActual /= maxDir() && not hayVecinoConClub_Hacia_(númeroDeClub, direcciónActual))  { // Sub 4c)  //los parametros contempla el numero de club del motoquero actual
+                                                                                                                    // la direccion es la de rotacion por las ortogonales que va con la variable
+        direcciónActual := siguiente(direcciónActual)
+    }
+    return (hayVecinoConClub_Hacia_(númeroDeClub, direcciónActual))
+}
+
+/*
+Esta parte esta rara, El return de la funcion de arriba da LA CONDICION (funcion) si encuentra uno solo que satisfaga la condicion
+La condicon hayVecinoConClub_Hacia_(númeroDeClub, direcciónActual) esta en el while, en el return y en la funcion
+que se declara a continuacion. es decir cuando hay uno da falso sale del while 
+y retorna hayVecinoConClub_Hacia_(númeroDeClub, direcciónActual)
+*/
+
+//Sub 4c)
+/*
+Esto permite hacer total el recorrido anterior
+*/
+
+function hayVecinoConClub_Hacia(númeroDeClub, direcciónASensar) {
+    /*
+        PROPÓSITO: Describe si hay una celda vecina
+            hacia la dirección **direcciónASensar** y además
+            esta tiene un motoquero que pertenezca al
+            club el número de club **númeroDeClub**
+        TIPO: Booleano
+        PRECONDICIONES: Ninguna
+    */
+    return (puedeMover(direcciónASensar) && hayVecinoConClub_EnCeldaHacia(númeroDeClub, direcciónASensar)) //Circuito corto hay vecino CON club es otra funcion a declarar 
+}
+
+function hayVecinoConClub_EnCeldaHacia(númeroDeClub, direcciónASensar) {
+    /*
+        PROPÓSITO: Describe si hay un motoquero en la celda vecina
+            hacia la dirección **direcciónASensar** que tenga como
+            club el número de club **númeroDeClub**
+        TIPO: Booleano
+        PRECONDICIONES: Debe haber una celda hacia la dirección dada
+    */
+    Mover(direcciónASensar)
+    return (hayMotoqueroConClub_(númeroDeClub))
+}
+
+function hayMotoqueroConClub_(númeroDeClub) {
+    /*
+        PROPÓSITO: Describe si hay un motoquero asociado al club dado club en la celda Actual
+        Parametro: **númeroDeClub** Tipo: Numero- numero a describir si el motoquero en la celda actual esta afiliado        
+        TIPO: Booleano
+        PRECONDICIONES: No posee.
+    */
+    return  (
+            hayMotoqueroAca()
+            && elMotoqueroPerteneceAUnClub()
+            && clubAlQuePerteneceUnMotoquero() == númeroDeClub
+            )                                                           //Todas son Funciones Primitivas  
+}
