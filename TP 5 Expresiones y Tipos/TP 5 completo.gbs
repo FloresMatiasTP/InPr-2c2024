@@ -1,0 +1,328 @@
+program{
+    
+ PelearLaBatalla()
+}
+
+procedure DibujarCuadradito_De2(colorDelCuadrado) {
+/*
+PROPÓSITO: Dibuja un cuadrado sólido de 2x2 de color **colorDelCuadrado**.
+PARÁMETROS:
+* colorDelCuadrado: Un color del cual se dibujará el cuadrado.
+PRECONDICIONES:
+* Existen al menos 1 celda al Norte y 1 al Este de la actual.
+*/
+    Línea2(colorDelCuadrado)
+    Mover(Norte)
+    Línea2(colorDelCuadrado)
+    Mover(Sur)
+}
+procedure Línea2(colorDeLaLinea) {
+  /*
+  PROPÓSITO: Dibujar una línea de longitud 2 de color **colorCuadrado**
+  PRECONDICIONES: existe al menos 1 celda al Este de la actual
+  */
+    Poner(colorDeLaLinea)
+    Mover(Este)
+    Poner(colorDeLaLinea)
+    Mover(Oeste)
+}
+
+//ejercicio 2
+procedure  Mover_SegunColor_(direccion,color){
+    /*
+        Proposito: Mover el cabezal tantas celdas como cantidad de bolitas de color **color** haya en la celda actual
+        Precondicion:ninguna
+        Parametros:**direccion** direccion - es la direccion a donde se tiene que mover el cabezal
+    */
+    repeat(nroBolitas(color)){
+        Mover(direccion)
+    }
+}
+//Ejercicio 6 BIBLIOTECA
+procedure SacarTodasLasDeColor_(colorASacar){
+     /*
+        Proposito: Sacar todas las bolitas de color **colorASacar** de la celda actual
+        Precondicion:ninguna
+        Parametros:**colorASacar** color - es el color del cual se van sacar las bolitas
+    */
+    Sacar_DeColor_(nroBolitas(colorASacar), colorASacar)
+}
+
+//Ejercicio 7 BIBLIOTECA        
+procedure VaciarCelda(){
+    /*
+        Proposito: Sacar todas las bolitas de cada color de la celda actual
+        Precondicion:ninguna
+    */
+    SacarTodasLasDeColor_(Azul)
+    SacarTodasLasDeColor_(Negro)
+    SacarTodasLasDeColor_(Verde)
+    SacarTodasLasDeColor_(Rojo)
+}
+-------------------------------------EL BOSQUE PARTE 3--------------------------------------------
+/*
+procedure Poner_SemillasAl_(cantidadDeSemillas, direccionAPoner){
+     deja el cabezal en la celda inicial
+        Proposito:Poner **cantidadDeSemillas** semillas en la celda hacia el **direccionAPoner** de la celda actual
+        Precondicion:Debe haber al meno 1 celda hacia el **direccionAPoner** de la celda actual
+        Parametros:
+        **cantidadDeSemillas** numero -Es la cantidad de semillas que va a poner en la celda 
+        **direccionAPoner** direccion- Es la direcccion a la cual se va a mover el cabezal
+    
+    Mover(direccionAPoner)
+    Poner_Semillas(cantidadDeSemillas)
+    Mover(opuesto(direccionAPoner))
+
+}
+
+procedure Sacar_ArbolesAl_(cantidadDeArboles, direccionASacar){
+     deja el cabezal en la celda inicial
+      Proposito: Sacar **cantidadDeArboles** Arboles de la parcela en direccion al **direccionASacar**
+                 de la parcela actual  
+      Precondicion:Debe haber al menos 1 parcela en direccion hacia el **direccionASacar** y al menos 
+                   **cantidadDeArboles** arboles en la parcela actual.
+      Parametros:**cantidadDeArboles*** : numero - Es la cantidad de arboles que se va a sacar de la parcela actual
+                 **direccionASacar**: direccion - Es la direccion a donde se va a mover para sacar arboles de la parcela  
+    
+    Mover(direccionASacar)
+    Sacar_Arboles(cantidadDeArboles)
+    Mover(opuesto(direccionASacar))
+}
+procedure Sacar_SemillasEnDiagonalAl_Y_(cantidadDeSemillas, primeraDirDiagonal, segundaDirDiagonal){
+     deja el cabezal en la celda inicial
+      Proposito: Sacar ***cantidadDeSemillas** semillas de la parcela en direccion diagonal al **primeraDirDiagonal** y **segundaDirDiagonal**
+      Precondicion: Debe Haber al menos 1 parcela en direccion hacia el **primeraDirDiagonal** y 1 parcela en direccion **segundaDirDiagonal** de la celda actual
+      Parametros:**cantidadDeSemillas**: numero - Es la cantidad de semillas a sacar
+      **primeraDirDiagonal**, **segundaDirDiagonal**: direcciones - Son la direcciones en las que se tiene que mover el cabezal
+    
+    Mover(primeraDirDiagonal)
+    Mover(segundaDirDiagonal)
+    Sacar_Semillas(cantidadDeSemillas)
+    Mover(opuesto(primeraDirDiagonal))
+    Mover(opuesto(segundaDirDiagonal))
+    }
+procedure Sacar_ArbolesEnDiagonalHorariaAl_( cantidadDeArboles,direccionDiagonal){
+     la diagonal horaria de una dirección es aquella dada por la dirección y su dirección siguiente.
+    / Ej. la diagonal horaria de Norte es Norte-Este, la de Sur es Sur-Oeste.
+    / deja el cabezal en la celda inicial
+      Proposito:
+      Precondicion:Debe haber al menos 1 celda en direccion **direccionDiagonal** y 1 celda en direccion hacia
+                    **siguiente(direccionDiagonal)**
+                   Debe haber al menos **cantidadDeArboles** arboles en la celda en diagonal en direccion hacia
+                    el  **direccionDiagonal** y al **siguiente(direccionDiagonal)** de la celda actual
+      Parametros:**cantidadDeArboles** : numero - Es la cantidad de arboles que se van sacar de la celda en diagonal
+      **direccionDiagonal** direccion: Es la direcion a donde se va a mover el cabezal en 
+    
+    Mover(direccionDiagonal)
+    Mover(siguiente(direccionDiagonal))
+    Sacar_Arboles(cantidadDeArboles)
+    Mover(opuesto(direccionDiagonal))
+    Mover(previo(direccionDiagonal))
+
+} 
+*/
+----------------------------------------------------------
+//Ejercicio 5 
+
+procedure EnviarAliadosParaDuplicarEnemigos() {
+    /*
+     Proposito: Enviar soldados aliados en la celda actual en cantidad suficiente para que
+                haya el doble de aliados que de soldados enemigos.
+     Precondicion:ninguna
+     OBSERVACIONES: Los soldados aliados estan reresentados por bolitas negras mientras que
+                    los enenmigos  estan representados por bolitas rojas
+    
+    */
+    repeat(2 * nroBolitas(Rojo) - nroBolitas(Negro)) {
+        Poner(Negro)
+    }
+}
+
+procedure PelearLaBatalla(){
+    /*
+     Proposito:
+     Precondicion: Debe haber al menos el doble de soldados aliados que de enemigos
+    
+    */
+        repeat(nroBolitas(Rojo) div 2){
+            SacarAliados()
+            SacarEnemigos()
+        }
+}
+procedure SacarAliados(){
+    repeat(3){
+        Sacar(Negro)
+    }
+    
+}
+procedure SacarEnemigos(){
+    repeat(2){
+        Sacar(Rojo)
+    }
+    
+}
+
+procedure PelearBatalla2(){
+    SacarSoldados(Negro, (nroBolitas(Rojo)* 3) div 2)
+    SacarSoldados(Rojo, nroBolitas(Rojo))
+   
+  }
+procedure SacarSoldados(tipoSoldado, cantidadDeSoldados) {
+  repeat(cantidadDeSoldados) {
+    Sacar(tipoSoldado)
+    }
+}
+
+
+
+
+-------------------------------------------------------------------
+
+//Ejercicio 8
+
+
+procedure DibujarBanda(ancho,alto,colorDeLaBanda){
+    /*
+     Proposito: Dibujar una banda que tenga **alto** celdas de alto hacia el norte, **ancho** celdas de ancho hacia el Este
+                y de color **colorDeLaBanda**     
+     Precondicion:Debe haber al menos **alto** celdas hacia el norte de la celda actual y al menos **ancho** celdas hacia
+                  el este de la celda actual
+     Parametros:**alto**: Numero - Es la cantidad de celdas de alto que va a tener la banda
+                **ancho**: Numero - Es la cantidad de celdas de ancho que va a tener la banda
+                **colorDeLaBanda**: Color - Es el color del cual se va a dibujar  la banda
+    */
+    repeat(alto){
+        DibujarDiagonal(ancho,colorDeLaBanda)
+        Mover_VecesAl_(ancho-1, Oeste)
+        Mover_VecesAl_(ancho-1, Sur)
+        Mover(Norte)
+    }
+    IrAEsquinaAl_Y_(Sur,Oeste) 
+}
+procedure DibujarDiagonal(ancho,colorDeLaBanda){
+     /*
+     Proposito: Dibujar una diagonal de **ancho** celdas de ancho y de color **colorDelaBanda** desde la celda actual hacia el NorEste
+     Precondicion: Debe haber al menos **ancho** celdas hacia el Este de la celda actual y **ancho - 1** celdas hacia el norte de la celda actual
+     Parametros:**ancho** : Numero - Es la cantidad de celdas de ancho que tiene que dibujar la diagonal
+                **colorDeLaBanda**: Color - Es el color del cual va a dibujar la diagonal
+    */
+    repeat(ancho-1){
+        Poner(colorDeLaBanda)
+        MoverseEnDiagonalAl_YAL_(Este, Norte)
+    }    
+    Poner(colorDeLaBanda)
+}
+procedure MoverseEnDiagonalAl_YAL_(primeraDireccion,segundaDireccion){
+     /*
+     Proposito:Ubicar el cabezal en la celda diagonal hacia el noreste de la celda actual
+     Precondicion: Debe haber al menos 1 celda en direccion hacia el **primeraDireccion** y 1 celda hacia el **segundaDireccion** de la celda actual
+     Parametros:**primeraDireccion** y **segundaDireccion** : Direccion - Son las direcciones en las que se tiene que mover el cabezal
+    */
+    Mover(primeraDireccion)
+    Mover(segundaDireccion)
+}
+
+procedure  PasarPalabraActualAMayúsculas(){
+    /*PROPÓSITO: Dibuja la palabra en minusculas de la fila actual en mayúsculas en la fila lindante norte de la celda actual.
+    PRECONDICIÓN: Debe existir al menos una celda hacia el norte desde la celda actual.
+                  La fila hacia el norte de la celda actual debe estar vacia 
+    */
+        repeat(nroBolitas(Rojo)){
+            Mover(Este)
+            PasarLetraAMayúscula()
+        }
+        IrAlBorde(Oeste)
+}
+procedure PasarLetraAMayúscula(){
+    /*PROPÓSITO: Dibuja la letra en minusculas de la celda actual en mayúsculas en la celda lindante norte.
+    PRECONDICIÓN: Debe existir al menos una celda hacia el norte desde la celda actual.
+                  La celda lindante al norte de la celda actual debe estar vacia
+    */
+    Poner_DeColor_Al_(nroBolitas(Negro) - 32,Negro,Norte)
+}
+procedure Poner_DeColor_Al_(cantidadAPoner,colorAPoner,direccionAPoner){
+    /*PROPÓSITO: Pone **cantidadAPoner** de bolitas  de color **colorAPoner** hacia el **direccionAPoner** de la celda actual
+    PRECONDICIÓN: Debe existir al menos una celda hacia **direccionAPoner** desde la celda actual.
+    PARAMETROS: **cantidadAPoner** -    Número -       Indica la cantidad de bolitas.
+                **colorAPoner** -       Color -           Indica el color de la/s bolitas.
+                **direccionAPoner** -   Direccion -   Indica la direccion a poner las bolitas.
+    */
+    Mover(direccionAPoner)
+    Poner_DeColor_(cantidadAPoner,colorAPoner)
+    Mover(opuesto(direccionAPoner))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

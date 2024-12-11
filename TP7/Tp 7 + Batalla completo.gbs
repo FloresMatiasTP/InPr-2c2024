@@ -1,0 +1,138 @@
+program {
+    
+    MoverE()
+}
+
+
+
+procedure MoverE() {
+    repeat(aliadosNecesariosParaDefensaEficazContra_(10) ){
+        Poner(Negro)
+    }
+}
+
+-------------------------------------A la batalla--------------------------------
+
+
+function cantidadDeSoldadosDe_(colorDelEjercito){
+    /*
+        Proposito:Indica  la cantidad de soldados de la celda actual del ejército  *colorDelEjército*
+        Precondicion: Ninguna
+        Parametros: *colorDelEjercito: Color - Indica el color del ejercito 
+        Tipo: Numero    
+        Observaciones: Cada ejercito es representado por un color,Negro para el aliado y Rojo para el enemigo
+    */
+    return (nroBolitas(colorDelEjercito))
+}
+procedure EnviarAliadosParaDuplicarEnemigos(){
+    /*
+     Proposito: Enviar soldados aliados en la celda actual en cantidad suficiente para que
+                haya el doble de aliados que de soldados enemigos.
+     Precondicion:ninguna
+     OBSERVACIONES: Los soldados aliados estan reresentados por bolitas negras mientras que
+                    los enenmigos  estan representados por bolitas rojas
+    
+    */
+    repeat(2 *cantidadDeSoldadosDe_(Rojo) - cantidadDeSoldadosDe_(Negro)){
+        EnviarSoldadoDelEjercito_(Negro)
+    }
+}
+procedure EnviarSoldadoDelEjercito_(colorDelEjercito){
+    /*
+        Proposito: Enviar un soldado del ejercito **colorDelEjercito** en la celda actual
+        Precondicion:Ninguna
+        Parametros: *colorDelEjercito*: Color - Indica el color del ejercito 
+        Observaciones: Cada ejercito es representado por un color,Negro para el aliado y Rojo para el enemigo
+    */
+    Poner(colorDelEjercito)
+}
+
+procedure PelearBatalla(){
+    /*
+        Proposito: - Simular una batalla en donde cada enfrentamiento saque de batalla a 2 soldados enemigos y 
+                     3 aliados de la celda actual. La batalla se termina cuando no hay mas soldados enemigos
+        Precondicion:Debe haber la cantidad suficiente del ejercito aliados como para ganar la batalla
+        Observaciones:Cada ejercito es representado por un color,Negro para el aliado y Rojo para el enemigo
+    */
+    repeat(cantidadDeSoldados_(Rojo) div 2){
+        SacarSoldado_DeBatalla(Negro,3)
+        SacarSoldado_DeBatalla(Rojo,2)
+    }
+    
+}
+procedure PelearBatalla2(){
+     SacarSoldado_DeBatalla(Negro, (cantidadDeSoldados_(Rojo)* 3) div 2)
+     SacarSoldado_DeBatalla(Rojo, cantidadDeSoldados_(Rojo))
+   
+  }
+function cantidadDeSoldados_(colorDelSoldado){
+    /*
+        Proposito:Indicar la cantidad de soldados enemigos que hay en la celda actual
+        Precondicion:Ninguna
+        Observaciones:Cada soldado enemigo es representado por una bolita roja
+    */
+    return (nroBolitas(colorDelSoldado))
+}
+
+procedure SacarSoldado_DeBatalla(colorDelSoldado, cantidadDeSoldados) {
+    /*
+        Proposito:Sacar de la batalla a *cantidadDeSoldados* soldados *colorDelSoldado*
+        Precondicion:Ninguna
+        Parametros: *colorDelSoldado*: Color - Indicar el color del soldado que se a sacar de la celda actual
+                    *cantidadDeSoldados*: Numero - Indica la cantidad de soldados  *colorDelSoldado* que se a sacar de batalla
+        Observaciones: * Cada soldado  es representado por un color, los alidos por el Negro y lso enemigo por el Rojo
+                      
+    */
+  repeat(cantidadDeSoldados) {
+    Sacar(colorDelSoldado)
+    }
+}
+
+
+function esCeldaIndefensa(){
+    /*
+        Proposito: Indicar si en la celda acutal no hay soldados aliados
+        Precondicion:
+        Observaciones: Cada soldado aliado es representado por una bolita de color Negro
+        Tipo: Numero
+    */
+    
+    return (cantidadDeSoldados_(Negro) == 0)
+}
+
+function  estadoDeEmergencia(){
+    /*
+        Proposito: indicar si existen más de 100 soldados enemigos, y además la celda está indefensa.
+        Precondicion:ninguna
+        Observaciones:Cada soldado  es representado por un color, los alidos por el Negro y lso enemigo por el Rojo
+        TIPO: Booleano
+    */
+    return (cantidadDeSoldados_(Rojo) >= 100 && esCeldaIndefensa())
+}
+function hayAlMenos_AliadosPorCada_Atacantes(cantidadDefensa, cantidadAtaque){
+    /*
+        Proposito: Indicar si hay por lo menos  hay **cantidadDefensa** soldados aliados por cada **cantidadAtaque** 
+                    soldados enemigos en la celda actual.
+        Precondicion:ninguna
+        Parametros: **cantidadDefensa**: Numero -  La cantidad mínima de soldados aliados que queremos por cada grupo de cantidadAtaque soldados enemigos
+                    **cantidadAtaque**: Numero -La cantidad de soldados enemigos que estamos considerando en la proporción.
+        Observaciones:Cada soldado  es representado por un color, los alidos por el Negro y lso enemigo por el Rojo
+        TIPO: Booleano
+    */
+   return (cantidadDeSoldados_(Negro) * cantidadAtaque  >= cantidadDefensa * cantidadDeSoldados_(Rojo))
+   //return (cantidadDeSoldadosDe_(Negro)>= cantidadDeSoldadosDe_(Rojo)* cantidadDefensa div cantidadAtaque)
+    
+}
+
+function aliadosNecesariosParaDefensaEficazContra_(cantidadDeSoldadosEnemigosAdicionales){
+    /*
+        Proposito:Describe el número de soldados aliados que faltan para defender la celda actual si a ella se suman 
+                    la cantidad de soldadosenemigos dada
+        Precondicion:Ninguna
+        Parametros:cantidadDeSoldadosEnemigosAdicionales* : Numero - cantidad de soldados enemigos a agregar en la celda actual
+        Tipo: numero
+    
+    */
+    return (((cantidadDeSoldados_(Rojo) + cantidadDeSoldadosEnemigosAdicionales)*3) div 2)
+}
+

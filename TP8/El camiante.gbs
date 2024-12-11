@@ -1,0 +1,192 @@
+program {
+    
+LlevarAlCaminanteALaMeta()
+    
+    
+}
+
+
+function colorCaminante(){
+    /*
+        Proposito: Describe el color del caminante
+        Tipo: Color
+        Precondicion: ninguno
+    */
+    return(Azul)
+}
+function colorIndicador(){
+    /*
+        Proposito: Describe el color del indicador del camino
+        Tipo: Color
+        Precondicion: ninguno
+    */
+    return(Verde)
+}
+function colorHuella(){
+    /*
+        Proposito: Describe el color de la huella del caminante
+        Tipo: Color
+        Precondicion: ninguno
+    */
+    return(Negro)
+}
+function colorMeta(){
+    /*
+        Proposito: Describe el color de la meta
+        Tipo: Color
+        Precondicion: ninguno
+    */
+    return(Rojo)
+}
+procedure LlevarAlCaminanteALaMeta(){
+     /*
+        Proposito:LLeva al caminante a la meta por el camino indicado por los indicadores
+        Precondicion:Tiene que haber indicadores del camino en el camino
+                     Tiene que haber una meta en el tablero
+                     El cabezal debe estar sobre el caminante
+    */   
+    while(not estaEnLaMeta()){
+        DejarHuella()
+        DarUnPaso()
+    }
+    
+    
+}
+function estaEnLaMeta(){
+    /*
+        Proposito: Indica si en cabezal esta en la meta
+        Tipo: booleano
+        Precondicion: 
+    */
+    return(hayBolitas(colorMeta()))
+}
+
+procedure DejarHuella(){
+    /*
+        Proposito:Dejar una huella del caminante ne la celda actual
+        Precondicion: El cabezal debe estar sobre el caminante
+    */
+    Poner(colorHuella())
+}
+procedure DarUnPaso(){
+    /*
+        Proposito:Realiza un paso del caminante siguiendo los indicadores de direccion
+        Precondicion:Tiene que haber indicadores del camino en el camino
+                     El cabezal debe estar sobre el caminante
+        
+    */
+    CambiarDeDirecciónSiHayIndicador()
+    MoverAlCaminanteHaciaDondeMira()
+}
+procedure CambiarDeDirecciónSiHayIndicador(){
+    /*
+        Proposito: Cambia la direccion del caminante si se encuentra sobre un indicador
+        Precondicion: El cabezal debe estar sobre el caminante
+    
+    */
+    if(hayIndicadorDeCambioDeDirección()){
+        CambiarDirecciónDelCaminanteALaDelIndicador()
+    }
+}
+procedure MoverAlCaminanteHaciaDondeMira(){
+    /*
+        Proposito:Mover el caminante hacia la direccion donde esta mirando
+        Precondicion:Debe haber una celda hacia la direccion  donde mira
+                    El cabezal debe estar sobre el caminante
+        
+    */
+    MoverAlCaminanteAl_(direccionALaQueMiraElCaminante())
+    
+}
+function direccionALaQueMiraElCaminante(){
+    /*
+        Proposito: Describe la direccion a la que mira el caminante
+        Tipo: Direccion
+        Precondicion: El cabezal debe estar sobre el caminante
+    */
+    return(direccionDelCodigo_(codigoDelCaminante()))
+}
+function direccionDelCodigo_(código){
+    
+     
+     dir := Norte  
+   //# Valor por defecto
+
+    if (código == 2) {
+        dir := Este
+    } elseif (código == 3) {
+        dir := Sur
+    } elseif (código == 4) {
+        dir := Oeste
+    }
+
+    return (dir)
+    
+}
+
+function codigoDelCaminante(){
+     /*
+        Proposito: Describe el codigo del caminante
+        Tipo: numero
+        Precondicion: El cabezal debe estar sobre el caminante
+    */
+    return(nroBolitas(colorCaminante()))
+}
+
+function hayIndicadorDeCambioDeDirección(){
+    /*
+        Proposito:Indica si hay un indicador de direccion sobre la celda actual
+        Tipo: Booleano
+        Precondicion: ninguna
+    */
+    return(hayBolitas(colorIndicador()))
+}
+
+procedure CambiarDirecciónDelCaminanteALaDelIndicador(){
+    /*
+        Proposito:Cambiar la direccion indicada por el caminante por la del indicador
+        Precondicion: Tiene que haber un indicador en la celda actual
+                      El cabezal debe estar sobre el caminante
+    */
+    Cambiar_ParaImitar_(colorCaminante(), colorIndicador())
+    
+    
+}
+procedure MoverAlCaminanteAl_(direccion){
+    /*
+        Proposito: Mueve al caminante en direccion hacia el *direccion*
+        Precondicion: Debe haber una celda hacia el *direccion* de la celda actual
+                     El cabezal debe estar sobre el caminante
+        Parametro: *direccion*: Indica la direccion en donde se mueve el caminante
+        
+    */
+    Mover_Bolitas_Al_(codigoDelCaminante(),colorCaminante(),direccion)
+    
+}
+procedure Cambiar_ParaImitar_(colorACambiar, colorAImitar){
+    /*
+        Proposito:Cambiar las cantidad de bolitas de color *colorACambiar* segun la cantidad de color *colorAImitar*
+        Precondicion:
+        Parametros: *colorACambiar* :color - es el color de las bolitas a cambiar
+                    *colorAImitar*: color - es el color de las bolitas a imitar
+    */
+    SacarTodasLasDeColor(colorACambiar)
+    Poner_DeColor_(nroBolitas(colorAImitar), colorACambiar)
+}
+
+
+
+procedure Mover_Bolitas_Al_(cantidad,color,direccion){
+    /*
+        Proposito: Mueve *cantidad* bolitas del color *color* hacia la celda en direccion al *direccion* de la celda actual,
+                  El cabezal termina en la direccion lindandte hacia el *direccion*
+        Precondicion: Debe haber al menos una celda hacia el *direccion* de la celda actual
+                      Debe haber al menos *cantidad* bolitas de color *color*
+        Parametros: *cantidad*: numero:indica la cantidad de bolitas
+                    *color*: color - Indica el color de las bolitas
+                    *direccion*:direccion: Direccion hacia donde se va a mover las bolitas
+    */
+    Sacar_DeColor_(cantidad,color)
+    Mover(direccion)
+    Poner_DeColor_(cantidad,color)
+}

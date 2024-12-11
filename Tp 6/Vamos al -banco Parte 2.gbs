@@ -1,0 +1,254 @@
+
+program{
+    Poner_DeColor_(90, Negro)
+    Depositar_EnMoneda_ComoPesos(2, Rojo)
+    
+}
+
+-------------------------------PARTE 1-------------------------------------
+procedure Depositar_EnMoneda_ComoPesos(cantidadADepositar, moneda){
+    /*
+        Proposito:Agregar a la cuenta la cantidad de pesos que resulte de convertir *cantidadADepositar*
+                  segun las tarifas correspondientes de la *moneda*
+        Proposito:Depositar **cantidadADepositar** de la moneda **moneda** en pesos en la cuenta bancaria
+        Precondicion:La celda actual representa a una cuenta bancaria
+        Parametros:**cantidadADepositar**: Numero - Indica la cantidad de peso
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras       
+        Observaciones:  Los Yuanes se representan con bolitas Rojas
+                        Los Dolares se representar con bolitas Verdes
+                        Los Euros se representan con bolitas Azules
+                        Los Pesos se representar con bolitas Negras
+    */
+    if(moneda == dolares()){
+        Depositar_EnMoneda_(cuantosPesosSiVendo_Dólares(cantidadADepositar), pesos())
+    }
+    elseif (moneda == euros()){
+        Depositar_EnMoneda_(cuantosPesosSiVendo_Euros(cantidadADepositar),pesos())
+    }else{
+        Depositar_EnMoneda_(cuantosPesosSiVendo_Yuanes(cantidadADepositar),pesos())
+    }
+}
+
+procedure ExtraerHasta_EnMoneda_(cantidadAExtraer, moneda){
+    /*
+        Proposito:Extraer de la cuenta *cantidadAExtraer* de *moneda* de la cuenta bancaria, en caso de 
+        que haya menos dinero que se quiere extraer, se extrae todo el dinero
+        Precondicion:
+        Parametros:*cantidadAExtraer*
+                    *moneda* : 
+        
+    */
+    if(nroBolitas(moneda)< cantidadAExtraer){
+        Extraer_EnMoneda(nroBolitas(moneda),moneda)
+    } else{                 
+        Extraer_EnMoneda(cantidadAExtraer,moneda)
+    }
+    
+}
+procedure Extraer_EnMoneda(cantidadAExtraer,monedaAExtraer){
+    /*  Proposito:Extraer de la cuenta *cantidadAExtraer* en *monedaAExtraer* de la cuenta
+        Precondicion:La celda actual representa a una cuenta bancaria
+                    hay suficiente dinero en *monedaAExtraer* en la ceunta bancaria
+        Parametros:**cantidadAExtraer**: Numero - Indica la cantidad de peso
+                   **moneda**: Color - Indica alguna de las 4 monedas 
+    */
+     Sacar_DeColor_(cantidadAExtraer, monedaAExtraer)
+}
+
+procedure ConvertirHasta_PesosA_(pesosAConvertir, moneda){
+    /*
+        Proposito: Convierte la cantidad de *pesosAconvertir* en *moneda*, en casos de que no hubiera la cantidad
+            suficiente de pesos, convierte todos los pesos que hay en la ceunta bancaria
+        Precondicion:La celda actual representa a una cuenta bancaria
+        Parametros:**pesosAConvertir**: Numero - Indica la cantidad de pesos a convertir
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras       
+
+    */
+    DepositarHasta_PesosEnMoneda_(pesosAConvertir, moneda)
+    ExtraerHasta_EnMoneda_(pesosAConvertir, pesos())
+}
+
+procedure  DepositarHasta_PesosEnMoneda_(pesosAConvertir, moneda){
+    /*
+        Proposito: Agregar a la cuenta la cantidad de *moneda* que resulte de convertir *pesosAconvertir*, segun
+                    la conversion, si no alcanza convierte todos los pesos que haya
+        Precondicion: La celda actual es una cuenta bancaria
+        Parametros:**pesosAConvertir**: Numero - Indica la cantidad de pesos a convertir
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras 
+    */
+    if(nroBolitas(pesos()) < pesosAConvertir){
+        DepositarPesos_EnMoneda_(nroBolitas(pesos()),moneda)
+    } else {
+        DepositarPesos_EnMoneda_(pesosAConvertir,moneda)
+    }
+}
+procedure DepositarPesos_EnMoneda_(pesosAConvertir,moneda){
+    /*
+        Proposito: Convierte los pesos de todas las cuentas a dolares
+        Precondicion: Debe tener al menos 1 fila y 10 columnas
+                      Cada celda del tablero representa a una ceunta bancaria
+                      El cabezal debe estar en el origen, esquina SurOeste
+        Parametros:**pesosAConvertir**: Numero - Indica la cantidad de pesos a convertir
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras 
+    */
+    if(moneda == dolares()){
+        Depositar_EnMoneda_(cuantosDolaresSePuedeComprarCon_Pesos(pesosAConvertir), moneda )
+    } elseif (moneda == euros()){
+        
+        Depositar_EnMoneda_(cuantosEurosSePuedeComprarCon_Pesos(pesosAConvertir) , moneda )
+    } else{
+        Depositar_EnMoneda_(cuantosYuanesSePuedeComprarCon_Pesos(pesosAConvertir), moneda )
+    }
+}
+procedure Depositar_EnMoneda_(cantidadADepositar,moneda){
+    /*  Proposito:Agrega a la cuenta *cantidadADepositar* de *moneda*
+        Precondicion:La celda actual representa a una cuenta bancaria
+        Parametros:**cantidadADepositar**: Numero - Indica la cantidad de peso
+                   **moneda**: Color - Indica alguna de las 4 monedas 
+                   */
+    Poner_DeColor_(cantidadADepositar , moneda)
+}
+
+procedure RealizarCorridaCambiaria(){
+    /*
+        Proposito: Convierte los pesos de todas las cuentas a dolares
+        Precondicion: Debe tener al menos 1 fila y 10 columnas
+                      Cada celda del tablero representa a una ceunta bancaria
+                      El cabezal debe estar en el origen, esquina SurOeste
+    */
+    repeat(9){
+        ConvertirTodosPesosaDolares()
+        IrASigCuenta()
+    }
+    ConvertirTodosPesosaDolares()
+
+}
+procedure ConvertirTodosPesosaDolares(){
+    /*
+        Procedure:Convierte todos los pesos de la ceunta bancaria a dolares
+        Precondicion:Cada celda del tablero representa a una cuenta bancaria
+    */
+    ConvertirHasta_PesosA_(nroBolitas(Negro), dolares())
+}
+procedure IrASigCuenta(){
+    /*
+        Proposito: Mueve le cabezal hacia la sig cuenta al este
+        Precondicion: Debe haber una cuenta bancaria al este 
+    */
+    Mover(Este)
+}
+
+-------------------------------PARTE 2 --------------------------------------------------
+
+function pesos(){
+    /*
+        Proposito: Describe el color representado por el pesos
+        Precondicion:ninguna
+        Observacion:el peso es representado por la bolita negra
+        Tipo: Color
+    */
+    return(Negro)
+}
+function yuanes(){
+    /*
+        Proposito:Describe el color representado por el yuan
+        Precondicion:
+        Observacion:el yuan es representado por la bolita roja
+        Tipo: Color
+    */
+    return(Rojo)
+}
+function euros(){
+    /*
+        Proposito:Describe el color representado por el euro
+        Precondicion:
+        Observacion:el euro es representado por la bolita azul
+        Tipo: Color
+    */
+    return(Azul)
+}
+function dolares(){
+    /*
+        Proposito:Describe el color representado por el dolar
+        Precondicion:
+        Observacion:el dolar es representado por la bolita verde
+        Tipo: Color
+    */
+    return(Verde)
+}
+function ahorrosEn_(moneda){
+    /*
+        Proposito: Describe la cantidad de unidades que se tiene en *moneda* en la cuenta bancaria actual
+        Precondicion:ninguna
+        Parametro: *moneda*: Color: Indica el color que representa a una moneda(dolar,peso,yuan,euro)
+        Tipo:Numero
+    */
+    
+    return (nroBolitas(moneda))
+}
+
+function cuantosDolaresSePuedeComprarCon_Pesos(cantidadDePesos){
+    /*
+        Proposito:Describe la cantidad de dólares que se pueden comprar con *cantidadDePesos* pesos en la cuenta bancaria actual dada la conversion.
+        Precondicion: ninguna
+        Parametros:*cantidadDePesos*: numero- Es la cantidad de pesos que hay en la cuenta bancaria
+        Tipo:Numero
+        Observacion:el peso es representados por las bolitas negras y el dolar por verdes
+    */
+    return (cantidadDePesos div 100 ) 
+    
+}
+function cuantosEurosSePuedeComprarCon_Pesos(cantidadDePesos){
+     /*
+        Proposito:Describe la cantidad de euros que se pueden comprar con *cantidadDePesos* pesos en la cuenta bancaria actual dada la conversion.
+        Precondicion: ninguna
+        Parametros:*cantidadDePesos*: numero- Es la cantidad de pesos que hay en la cuenta bancaria
+        Tipo:Numeror
+        Observacion:el peso es representados por las bolitas negras y el euro por azules
+    */
+    return (cantidadDePesos div 115 ) 
+}
+function cuantosYuanesSePuedeComprarCon_Pesos(cantidadDePesos){
+     /*
+        Proposito:Describe la cantidad de yuanes que se pueden comprar con *cantidadDePesos* pesos en la cuenta bancaria actual dada la conversion.
+        Precondicion: ninguna
+        Parametros:*cantidadDePesos*: numero- Es la cantidad de pesos que
+        Tipo:Numero
+        Observacion:el peso es representados por las bolitas negras y el euro por azules
+    */
+    return (cantidadDePesos div 17 ) 
+}
+
+
+function cuantosPesosSiVendo_Dólares(cantidadDeMonedaExtranjera){
+    /*
+        Procedure:Indica cuantos pesos se obtendria al vender *cantidadDeMonedaExtranjera* dolares
+        Precondicion:La celda actual representa una cuenta bancaria
+        Parametros:*cantidadDeMonedaExtranjera*: Numero
+        Tipo:Numero
+        Observacion:
+    */
+    return (cantidadDeMonedaExtranjera * 80)
+    
+}
+function cuantosPesosSiVendo_Euros(cantidadDeMonedaExtranjera){
+    /*
+        Procedure:Indica cuantos pesos se obtendria al vender *cantidadDeMonedaExtranjera* euros
+        Precondicion:La celda actual representa una cuenta bancaria
+        Parametros:*cantidadDeMonedaExtranjera*: Numero
+        Tipo:Numero
+        Observacion:
+    */
+    return (cantidadDeMonedaExtranjera *90)
+    
+}
+function cuantosPesosSiVendo_Yuanes(cantidadDeMonedaExtranjera){
+    /*
+        Procedure:Indica cuantos pesos se obtendria al vender *cantidadDeMonedaExtranjera* yuanes
+        Precondicion:La celda actual representa una cuenta bancaria
+        Parametros:*cantidadDeMonedaExtranjera*: Numero
+        Tipo:Numero
+        Observacion:
+    */
+    return (cantidadDeMonedaExtranjera * 12)
+}

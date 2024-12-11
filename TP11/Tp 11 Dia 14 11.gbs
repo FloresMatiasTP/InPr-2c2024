@@ -1,0 +1,748 @@
+-------------------------------------------------------------EJERCICIO 1------------------------------------------------------------------------
+
+function singularCon_(elemento){
+    /*
+        Proposito:Describe una lista con el elemento **elemento**
+        Prec:ninguna
+        Parametro:*elemento*: "Elemento"
+        Tipo:Lista "elemento"
+    */
+    return([elemento])
+}
+-------------------------------------------------------------EJERCICIO 2------------------------------------------------------------------------
+
+function segundoDe_(unaLista){
+    /*
+        Proposito:Describe  el segundo elemento de la lista **unaLista**
+        Prec:ninguna
+        Parametro:unaLista: 
+        Tipo:Lista
+    */
+    return(primero([Norte,Este,Sur,Oeste]))
+    
+}
+
+
+-------------------------------------------------------------EJERCICIO 3------------------------------------------------------------------------
+
+function esSingular_(unaLista){
+    /*
+        Proposito: Indica si la lista *unaLista* contiene un solo elemento
+        Prec:ninguna
+        Parametro:**unaLista**: Lista de [unaLista]
+        Tipo: Lista de[unaLista]
+    */
+    return(esVacía(resto(unaLista)))
+    
+} 
+
+-------------------------------------------------------------EJERCICIO 4------------------------------------------------------------------------
+
+function primerCartaDeLaMano_(unaMano){
+    /*
+        Proposito: Describela primer carta de la mano **unaMano** 
+        Prec:La mano *unaMano* debe tener al menos una carta
+        Parametro:**unaMano**: Lista de cartas
+        Tipo: Lista de cartas
+    */
+    return(primero(unaMano))   
+}
+function segundaCartaDeLaMano_(unaMano){
+    /*
+        Proposito: Describe la segunda carta de la mano **unaMano** 
+        Prec:La mano *unaMano* debe tener al menos dos cartas
+        Parametro:**unaMano**: Lista de cartas
+        Tipo: Lista de cartas
+    */
+    return(primero(resto(unaMano)))   
+}
+
+function tercerCartaDeLaMano_(unaMano){
+    /*
+        Proposito: Describe la tecer carta de la mano **unaMano** 
+        Prec:La mano *unaMano* debe tener al menos tres cartas
+        Parametro:**unaMano**: Lista de cartas
+        Tipo: Lista de cartas
+    */
+    return(primero(resto(resto(unaMano))))   
+
+}
+
+function laMano_LuegoDeRobarUnaCartaDe_(unaMano,unMazo){
+    /*
+        Proposito: describe la mano resultante luego de robar la primera carta del mazo y agregarla a la mano del jugador 
+        Prec:La mano *unMazoo* debe tener al menos una carta
+        Parametro:**unaMano**: Lista de cartas
+                   :**unaMazo**: Lista de cartas
+        Tipo: Lista de cartas
+    */    
+    return( unaMano ++ [primero(unMazo)]  ) 
+    
+}
+
+function laMano_LuegoDeJugarUnaCarta(unaMano){
+    /*
+        Proposito: describe la mano resultante luego de jugar la primera carta de la mano *unaMano* 
+        Prec:La mano *unMazoo* debe tener al menos una carta
+        Parametro:**unaMano**: Lista de cartas
+        Tipo: Lista de cartas
+    */       
+    return(resto(unaMano))
+}
+
+function laMano_LuegoDeJugarLaSegundaCarta(unaMano){
+    /*
+        Proposito: describe la mano resultante luego de jugar la segunda carta de la mano *unaMano* 
+        Prec:La mano *unaMano* debe tener al menos dos cartas
+        Parametro:**unaMano**: Lista de cartas
+        Tipo: Lista de cartas
+    */       
+    return([primero(unaMano) ] ++ sinLasDosPrimerasCartasDeLaMano_(unaMano))
+}
+
+function sinLasDosPrimerasCartasDeLaMano_(unaMano){
+    
+    return(resto(resto(unaMano)))
+}
+-------------------------------------------------------------EJERCICIO 5------------------------------------------------------------------------
+
+
+function primerasTresCartasDeLaTira_(unaTiraDeCartas){
+    /*
+        Prop: Describe una lista con las primeras 3 cartas de la misma
+        Prec:**unaTiraDeCarta**  Debe tener al menos 3 cartas
+        Parametro:**unaTiraDeCarta**:
+        Tipo:LIsta de tiras de cartas
+    */
+    return ( [primero(unaTiraDeCartas)] ++ [primero(resto(unaTiraDeCartas))] ++ [tercerCartaDeLaTira_(unaTiraDeCartas)]  )
+}
+function tercerCartaDeLaTira_(unaTiraDeCartas){
+    
+    
+    return(primero(resto(resto(unaTiraDeCartas))))
+}
+
+function laMano_TieneJugadaParaAgregarALaTira_(unaMano,unaTira){
+    
+    /*
+        Prop: Indica si la primera carta que puede jugar el jugador puede ser agregada en la tira o no
+        Prec:**unaMano**  Debe tener al menos 3 cartas
+        Parametro:**unaMano**:
+        Tipo:booleano
+    */
+}
+
+function laTira_DespuésDeJugar_(unaTira,unaCarta){
+    /*
+        Prop:describa la tira que resulta de jugar esa carta en esa tira.
+        Prec:La carta tiene que poder ser agregada a la tira *unaTira*
+        Parametros:
+        Tipo:Tira de cartas
+    */
+    return( unaTira ++ [unaCarta] )
+    
+}
+
+-------------------------------------------------       Pistas de carreras        ------------------------------------------------------------
+function sigueRectaEn_(){
+    /*
+        Prop:
+        Prec:
+        Tipo:
+        Parametro:
+    */
+    
+}
+
+
+
+
+
+---------------------------------------------EJERCICIO 8--------------------------------------
+function longitudDe_(unaLista){
+     /*
+        Prop: Describe la cantidad de elementos de la lista *unaLista*
+        Prec:ninguna
+        Tipo:LIsta de Numeros
+        Parametro:*unaLista*: Lista de numeros
+                  
+        Obs: Es un recorrido de acumulacion 
+             sobre los elementos de la lista *unaLista*
+             contando la cantidad de elmentos de la lista dada
+    */
+    listaRestante := unaLista
+    longitudDeLaListaAlMomento := 0
+    while(not esVacía(listaRestante)){
+        longitudDeLaListaAlMomento:= longitudDeLaListaAlMomento + 1
+        listaRestante := resto(listaRestante)
+    }
+    return(longitudDeLaListaAlMomento)
+}
+---------------------------------------------EJERCICIO 9--------------------------------------
+function sumatoriaDe_(unaLista){
+     /*
+        Prop: Describe la sumatoria de todos lo elemento de la lista *unaLista*
+        Prec:Los elementos de la  lista *unaLista* deben ser numeros
+        Tipo:LIsta de Numeros
+        Parametro:*unaLista*: Lista de numeros
+                  
+        Obs: Es un recorrido de transformacion 
+             sobre los elementos de la lista *unaLista*
+             en donde se suman todos los valores de la lista
+    */
+    listaRestante := unaLista
+    sumatoriaDeLalistaAlMomento := 0
+    while(not esVacía(listaRestante)){
+        sumatoriaDeLalistaAlMomento:= sumatoriaDeLalistaAlMomento + primero(listaRestante)
+        listaRestante := resto(listaRestante)
+    }
+    return(sumatoriaDeLalistaAlMomento)
+
+    
+}
+---------------------------------------------EJERCICIO 10--------------------------------------
+function productoriaDe_(unaLista){
+    /*
+        Prop: Describe el producto de todos lo elemento de la lista *unaLista*
+        Prec:Los elementos de la  lista *unaLista* deben ser numeros
+        Tipo:LIsta de Numeros
+        Parametro:*unaLista*: Lista de numeros
+                  
+        Obs: Es un recorrido de transformacion 
+             sobre los elementos de la lista *unaLista*
+             en donde se multiplica todos los valores de la lista
+    */
+    listarestante := unaLista
+    productoDeLalista :=1
+    while(not esVacía(listaRestante)){
+        productoDeLalista:= productoDeLalista * primero(listaRestante)
+        listaRestante := resto(listaRestante)
+    }
+    return(listaAumentada)
+}
+---------------------------------------------EJERCICIO 12---------------------------------------
+function elementosDe_aumentadosEn_(unaLista,unNumero){
+    /*
+        Prop: Describe una lista de numeros en donde cada elemento es aumentada mas *unNumero*
+        Prec:ninguna
+        Tipo:LIsta de Numeros
+        Parametro:*unaLista*: Lista de numeros
+                  *unNumero*: Numero
+        Obs: Es un recorrido dr transformacion 
+             sobre los elementos de la lista *unaLista*
+             en donde por cada elemento se aumenta su valor en *unNumero*
+    */
+    listarestante := unaLista
+    listaAumentada :=[]
+    while(not esVacía(listaRestante)){
+        listaAumentada:= listaAumentada ++ [primero(listaRestante) + unNumero]
+        listaRestante := resto(listaRestante)
+    }
+    return(listaAumentada)
+}
+---------------------------------------------EJERCICIO 13---------------------------------------
+function opuestasDe_(unaLista){
+     /*
+        Prop: Describe una lista en donde cada elemento es opuesta a cada elemento de la lista *unaLista*
+        Prec:Los elementos de la lista *unaLista* deben ser direcciones
+        Tipo:Lista de
+        Parametro:*unaLista*: Lista de tipo [unaLista]
+    */
+    listaARecorrer:= unaLista
+    listaDeOpuestos := []
+    while(not esVacía(listaARecorrer)){
+        listaDeOpuestos :=  listaDeOpuestos ++ [opuesto(primero(listaARecorrer))]  
+        listaARecorrer := resto(listaARecorrer)
+    }
+    return(listaDeOpuestos)
+}
+-------------------------------------------------------------EJERCICIO 14------------------------------------------------------------------------
+function siguienteDe_(unaLista){
+    /*
+        Prop: Describe una lista lista en dodne cada elemento es el siguiente de los elemntos de la lista *unaLista*
+        Prec:La lista *unaLista* debe ser del tipo enumerativo(color,direccion,booleano)
+        Tipo:lista de tipo [unaLista]
+        Parametro: *unaLista*: Lista enumerativos
+    */
+         */
+    listaARecorrer:= unaLista
+    listaDeSiguientes := []
+    while(not esVacía(listaARecorrer)){
+        listaDeSiguientes :=  listaDeSiguientes ++ [siguiente(primero(listaARecorrer))]  
+        listaARecorrer := resto(listaARecorrer)
+    }
+    return(listaDeSiguientes) 
+    
+}
+-------------------------------------------------------------EJERCICIO 15------------------------------------------------------------------------
+-------------------------------------------------------------EJERCICIO 16------------------------------------------------------------------------
+
+function reversoDe_(unaLista){
+     /*
+        Prop: Describe el reverso de la lista *unalista* 
+        Prec:Ninguna
+        Tipo:LIsta de [unaLista]
+        Parametro: *unaLista*: Lista de [unaLista]
+    */    
+    listaARestante:= unaLista
+    listaDeReversos := []
+    while(not esVacía(listaARestante)){
+        listaDeReversos :=  [primero(listaARestante)]  ++ listaDeReversos
+        listaARestante := resto(listaARestante)
+    }
+    return(listaDeReversos) 
+    
+}
+-------------------------------------------------------------EJERCICIO 17------------------------------------------------------------------------
+function paresDe_(unaLista){
+    /*
+        Prop: Describe una lista de los numero pares de la lista *unaLista*
+        Prec:Ninguna
+        Tipo:Lista de numeros
+        Parametro:*unaLista* : Lista de  Numero
+        Obs: Es un recorrido de filtro 
+             sobre los elementos de la lista *unaLista*
+             filtrando solo los numero pares
+    */ 
+    listaRestante := unaLista
+    listaDePares := []
+    while(not esVacía(listaRestante)){
+        listaDePares := listaDePares ++ singular_Si_(primero(listaRestante),esPar_(primero(listaRestante))     
+        listaRestante := resto(listaRestante)
+        
+    }
+    
+    return(listaDePares)
+    
+}
+function esPar_(unNumero){
+    /*
+        Prop:Indica si el numero *unNumero* es par
+        Prec:*unNumero* Debe ser un numero
+        Tipo:Booleano
+    */
+    return(unNumero mod 2 == 0)
+}
+-------------------------------------------------------------EJERCICIO 18------------------------------------------------------------------------
+function imparesDe_(unaLista){
+    /*
+        Prop: Describe una lista de los numero impares de la lista *unaLista*
+        Prec:Ninguna
+        Tipo:Lista de numeros
+        Parametro:*unaLista* : Lista de  Numero
+        Obs: Es un recorrido de filtro 
+             sobre los elementos de la lista *unaLista*
+             filtrando solo los numero impares
+    */ 
+    listaRestante := unaLista
+    listaDeImpares := []
+    while(not esVacía(listaRestante)){
+        listaDeImpares := listaDeImpares ++ singular_Si_(primero(listaRestante),esImpar_(primero(listaRestante)) )   
+        listaRestante := resto(listaRestante)
+    }
+    return(listaDeImpares)
+    
+}
+function esImpar_(unNumero){
+    /*
+        Prop:Indica si el numero *unNumero* es impar
+        Prec:*unNumero* Debe ser un numero
+        Tipo:Booleano
+    */
+    return(numero mod 2 > 0)
+}
+-------------------------------------------------------------EJERCICIO 19------------------------------------------------------------------------
+function elementosDe_SinAparicionesDe_(unaLista,unElemento){
+    /*
+        Prop:Describe una lista sin el elemento *unElemento*
+        Prec:La lista *unaLista* no debe ser vacia
+        Tipo: Lista de [Elemento]
+        Parametro: *unaLista*: Lista de [Elemento]
+                   *unElemento*: Elemento
+        Obs: Es un recorrido de filtro
+            sobre la lista *unalista*
+            filtrando los elementos que no sean igual a *unElemento*
+    */
+    listaRestante := unaLista
+    listaFiltradaAlMomento := []
+    while(not esVacía(listaRestante) && ){
+        listaFiltradaAlMomento := listaFiltradaAlMomento ++ singular_Si_(primero(listaRestante), primero(listaRestante) /= unElemento)
+        listaRestante := resto(listaRestante)
+        
+    }
+    return(listaFiltradaAlMomento)
+}
+-------------------------------------------------------------EJERCICIO 20------------------------------------------------------------------------
+function soloLasFigurasDe_(unaListaDeCartas){
+     /*
+        Prop:Describe una lista solo con las carta que sean figuras
+        Prec:ninguna
+        Tipo:LIsta de Carta
+        Parametro:*unaListaDeCartas*: Lista de Carta
+    */
+    listaRestante := unaListaDeCartas
+    listaDefigurasAlMomento := []
+    while(not esVacía(listaRestante)  ){
+        listaDefigurasAlMomento := listaDefigurasAlMomento ++ singular_Si_(primero(listaRestante),  esUnaFigura_(primero(listaRestante)) )
+        listaRestante := resto(listaRestante)
+    }
+    return(listaFiltradaAlMomento)
+}
+-------------------------------------------------------------EJERCICIO 21 ------------------------------------------------------------------------
+function contiene_A_(unaLista, unElemento) {
+     /*
+        Prop:Indica si en la lista *unaLista* esta el elemento *unElemento*
+        Prec:nignuna
+        Tipo:Lsta de [Elemento]
+        Parametro:
+    */
+    listaRestante := unaLista
+    while( not esVacía(unaLista) && not (primero(unaLIsta) == unElemento) )){
+        
+        listaRestante := resto(listaRestante)
+    }
+    return( not esVacía(unaLista)
+}
+
+
+-------------------------------------------------------------EJERCICIO 22------------------------------------------------------------------------
+
+function indiceEn_De_(unaLista,unElemento){
+    /*
+        Prop:Describe la primera ubicación de la lista en la que se encuentra dicho elemento
+        Prec:La lista mo debe ser vacia
+        Tipo:Numero
+        Parametro:
+    */
+      listaRestante := unaLista
+      posicionDelElementoAlMomento := 1
+    while(not esVacía(unaLista) && not (primero(unaLIsta) == unElemento) ){
+        posicionDelElementoAlMomento := posicionDelElementoAlMomento + 1
+        listaRestante := resto(listaRestante)
+    }
+    return(posicionDelElementoAlMomento)
+    
+}
+-------------------------------------------------------------EJERCICIO 23------------------------------------------------------------------------
+function hayAlgunoDe_Entre_Y_(unaLista, primerNumero,segundoNumero){
+     /*
+        Prop:Indica si algun elemento de la lista esta entre la cota dada
+        Prec:La lista mo debe ser vacia
+        Tipo:Booleano
+        Parametro: **unaLista**: lista de Numero
+                   **primerNumero**: Numero
+                **segundoNumero**: Numero
+    */
+    listaRestante := unaLista
+    while( not  esVacía(listaRestante) )
+}
+
+-------------------------------------------------------------EJERCICIO 24 ------------------------------------------------------------------------
+
+function hayAlgúnAsEn_(unaListaDeCartas){
+     /*
+        Prop:Indica si en la lista **listaDeCartas** hay alguna que sea un ancho
+        Prec:ninguna
+        Tipo:Booleano
+        Parametro:**unaListaDeCartas** : Lista de cartas
+    */
+    listaRestante := unaListaDeCartas
+
+    while(not esVacía(listaRestante) && not esUnAncho_(primero(listaRestante) ){
+        listaRestante := resto(listaRestante)    
+    }
+    return (not esVacía(listaRestante)  )
+}
+-------------------------------------------------------------EJERCICIO 25 ------------------------------------------------------------------------
+function minimoEn_(unaLista){
+    /*
+        Prop:Describe el numero mas chico de la lista **unaLista**
+        Prec:La lista no debe ser vacia
+        Tipo:Numero
+        Parametro: *unaLista*: Lista de Numero
+    */
+    
+    numeroMasChicoAlMomento:= primero(unaLista)
+    foreach  numero in unaLista {
+        numeroMasChicoAlMomento:= minimoEntre_Y_(numeroMasChicoAlMomento ,numero)
+    }    
+    return(numeroMasChicoAlMomento)
+}
+
+
+function mínimoEntre_y_(elemento1, elemento2) {
+    /* PROPÓSITO: Describir el mínimo entre los dos elementos dados. Si son iguales, describe cualquiera de ellos.
+       PRECONDICIONES: Ninguna.
+       PARÁMETROS:
+            * elemento1: De un tipo básico cualquiera.
+            * elemento2: Del mismo tipo que **elemento1**.
+       TIPO: El mismo que **elemento1**.
+   */
+    return (choose elemento1 when (elemento1 < elemento2)
+                   elemento2 otherwise // (elemento1 >= elemento2)
+            )
+}
+-------------------------------------------------------------EJERCICIO 26 ------------------------------------------------------------------------
+
+
+function máximoEn_(unaLista){
+    /*
+        Prop:Describe el numero mas grande de la lista **unaLista**
+        Prec:La lista no debe ser vacia
+        Tipo:Numero
+        Parametro: *unaLista*: Lista de Numero
+    */
+    
+    numeroMasGrandeAlMomento:= primero(unaLista)
+    foreach  numero in unaLista {
+        numeroMasGrandeAlMomento:= maximoEntre_y_(numeroMasGrandeAlMomento ,numero)
+    }    
+    return(numeroMasGrandeAlMomento)
+}
+
+
+function maximoEntre_y_(elemento1, elemento2) {
+    /* PROPÓSITO: Describir el maximo entre los dos elementos dados. Si son iguales, describe cualquiera de ellos.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * elemento1: De un tipo básico cualquiera.
+            * elemento2: Del mismo tipo que **elemento1**.
+        TIPO: El mismo que **elemento1**.
+    */
+    return (choose elemento1 when (elemento1 > elemento2)
+                   elemento2 otherwise // (elemento1 >= elemento2)
+        )
+}
+-------------------------------------------------------------EJERCICIO 27 ------------------------------------------------------------------------
+function laMejorCartaEn_ParaTira_(unaListaDeCartas, unaTira){
+     /*
+        Prop: Describe la mejor carta posible para sumar a una tira
+        Prec:ninguno
+        Tipo:Carta
+        Parametro: *unaListaDeCartas*: Lista de Carta
+                   **unaTira**:
+        Obs: - Para sumar a una tira se debe jugar una carta que sea menor a la primera de la tira y de distinto palo
+             - Oro es la mejor posible, seguido de Copas, luego Espadas y finalmente Bástos.
+
+    */
+    mejorCartaAlMomento := primero(unaListaDeCartas)
+    foreach carta in unaListaDeCartas{
+        mejorCartaAlMomento:= mejorCartaEntre_Y_(mejorCartaAlMomento, carta)
+    }
+}
+
+function mejorCartaEntre_Y_(carta1,carta2){
+    
+    return( choose carta1 when(palo(carta1) )  ) 
+}
+-------------------------------------------------------------EJERCICIO 28 ------------------------------------------------------------------------
+function elementosEn_Hasta_(unaLista, indice){
+      /*
+        Prop:Describe la lista de elementos que estan antes del indice
+        Prec:La lista de ebe tener al menos **indice**  elementos
+        Tipo:LIsta de [Elemento]
+        Parametro:
+        Obs: Es un recorrido de filtro
+             sobre los elelmtnos de a lista 
+             filtrando solo los elementos que estan antes del indice 
+    */
+    listaRestante := unaLista
+    listaAlMomento := []
+    posicionAlMomento := 1
+    while( not esVacía(listaRestante) &&  posicionAlMomento /= indice){
+        listaAlMomento := listaAlMomento  ++ [primero(listaRestante)]
+        listaRestante := resto(listaRestante)
+        posicionAlMomento :=posicionAlMomento + 1
+        
+    }
+    return(listaAlMomento)
+}
+-------------------------------------------------------------EJERCICIO 29 -----------------------------------------------------------------------
+function elementosEn_Desde_(unaLista, unIndice){
+    /*
+        Prop:Describe la lista de todos los elementos en la original que están después de dicho índice
+        Prec: nignuna
+        Tipo:LIsta de [Elemento]
+        Parametro:
+    */
+    indiceAlMomento:= 0
+    listaRestante:= unaLista
+    while( not esVacía(listaRestante) && not indiceAlMomento == unIndice){
+        indiceAlMomento := indiceAlMomento + 1
+        listaRestante := resto(listaRestante)
+        
+    }
+    return(listaRestante)
+    
+}
+-------------------------------------------------------------EJERCICIO 30 -----------------------------------------------------------------------
+function elementosEn_SinPrimeraApariciónDe_(unaLista,unElemento){
+     /*
+        Prop:Describe la lista *unaLIsta* sin el elemento *unElemento* si esta en la lista
+        Prec:nignuna
+        Tipo:Lista de [Elemento]
+        Parametro:
+        Obs: Es un recorrido de filtro 
+             sobre la lista *unaLIsta*
+             filtrando los elementos que sean distintos a *unElemento* 
+    */   
+    listaAlMomento := []
+    foreach elementoActual in unaLista{
+        listaAlMomento := listaAlMomento ++   singular_Si_(elementoActual, elementoActual /= unElemento)  
+    }
+    return (listaAlMomento)
+} 
+-------------------------------------------------------------EJERCICIO 31 -----------------------------------------------------------------------
+function sinDuplicados_(unaLista){
+      /*
+        Prop:Describe la lista *unaLista* sin elementos duplicacdos
+        Prec:ninguna
+        Tipo:Lista de [Elemento]
+        Parametro:
+        Obs: Es un recorrido de filtro
+            sobre los elementos de la lista unaLista
+            filtrando los elemento que no sean duplicados
+    */
+     listaFiltradaAlMomento := []
+    foreach elementoActual in unaLista{
+        listaFiltradaAlMomento := listaFiltradaAlMomento ++   singular_Si_(elementoActual, not contiene_A_(listaFiltradaAlMomento, elementoActual))  
+    }
+    return (listaFiltradaAlMomento)
+}
+
+-------------------------------------------------------------EJERCICIO 32 -----------------------------------------------------------------------
+function repetición_VecesDe_(unElemento,unNumero){
+    /*
+        Prop:Describir una lista de *elemento* repitinedo *unNumero* veces el elemento *unElemento*
+        Prec:
+        Tipo:LIsta de [Elemento]
+        Parametro:
+    */
+    listaRepetidaAlMomento :=[]
+    repeat(unNumero){
+        listaRepetidaAlMomento := listaRepetidaAlMomento ++ [unElemento]    
+    }
+    return(listaRepetidaAlMomento)
+}
+
+function laLista_Clonada_Veces(unaLista,unNumero){
+     /*
+        Prop:Describe la lista *unaLista* clonada *unNumero* veces
+        Prec:Ninguno
+        Tipo:Lista de [Elemento]
+        Parametro:
+    */
+    listaClonadaAlMomento := []
+    repeat(unNumero ){
+        listaClonadaAlMomento:= listaClonadaAlMomento ++ unaLista      
+    }
+    return(listaClonadaAlMomento)
+}
+
+function losElementosDe_Clonados_Veces(unaLista,unNumero){
+    /*
+        Prop:Describe una lista de elementos repetidas *unNUmero* veces
+        Prec:Ninguno
+        Tipo:LIsta de [Elemento]
+        Parametro:*unaLista*: Lista de [elementos]
+                  *unNumero*: Numero
+    */
+    listadeElementosClonadosAlMomento:= []
+    foreach elemento in unaLista{
+        listadeElementosClonadosAlMomento:=listadeElementosClonadosAlMomento ++repetición_VecesDe_(elemento,unNumero)
+    }
+    
+    return(listadeElementosClonadosAlMomento)
+}
+
+-------------------------------------------------------------EJERCICIO 33 -----------------------------------------------------------------------
+function lista_HomologadaPorDebajoDe_A_(unaLista,umbral,default){
+    /*
+        Prop:describa una lista de números que está basada en la lista dada de la siguiente
+            manera: aquellos números de la lista dada que son mayores o iguales al umbral, permanecen igual,
+            pero aquellos que son menores, son reemplazados por el valor default
+        Prec:
+        Tipo:LIsta de Numero
+        Parametro:
+    */
+    listadeNumeroAlMomento :=[]
+    foreach numero in unaLista{
+        listadeNumeroAlMomento := listadeNumeroAlMomento ++ 
+    }
+
+    return(listadeNumeroAlMomento)
+}
+
+
+-------------------------------------------------------------EJERCICIO 35 -----------------------------------------------------------------------
+function intersecciónDe_Con_(){
+        /*
+        Prop:Describe una lista en donde los elementos esten en la lista *primeraLista* y *segundaLIsta*
+        Prec:ninguna
+        Tipo:Lista de [Elementos]
+        Parametro:
+    */
+    listaDeInterseccioAlMomento := []
+    
+    return ()
+}
+
+-------------------------------------------------------------EJERCICIO 29 -----------------------------------------------------------------------
+-------------------------------------------------------------EJERCICIO 29 -----------------------------------------------------------------------
+-------------------------------------------------------------EJERCICIO 29 -----------------------------------------------------------------------
+
+-------------------------------------------------------------EJERCICIO ------------------------------------------------------------------------
+
+function singular_Si_(elemento, condición) {
+     /* PROPÓSITO: Describir una lista según el valor de la condición dada. 
+                  Si es verdadera, describe la lista singularcon **elemento**. Si no, describe la lista vacía.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * elemento: De un tipo cualquiera.
+            * condición: Booleano.
+        TIPO: Lista del tipo de **elemento**.
+    */
+    return (choose [elemento] when (condición)
+                [] otherwise)
+}
+
+
+
+program{
+    /*
+        Prop:
+        Prec:
+        Tipo:
+        Parametro:
+    */
+    return(primerasTresCartasDeLaTira_([2,3,4,5]))
+}
+
+
+/*
+REcorrido sobre LIstas
+    listaRestante := todaLaLista
+    while(not esVacía(listaRestante)){
+        //procesar primero(listaRestante)
+        listaRestante := resto(listaRestante)
+    }
+}    
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

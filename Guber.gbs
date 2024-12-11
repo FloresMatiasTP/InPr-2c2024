@@ -1,0 +1,127 @@
+
+
+
+procedure IrARecogerSolicitanteConId_(numeroDeId){
+    /*
+        Proposito: Mover al vehiculo hasta encontrar al solicitante con el id **numeroDeId** y una vez que esta sobre el solicitante subirlo al vehiculo 
+        Precondicion:- El cabezal debe estar sobre el vehiculo
+                     -El vehiculo debe estar vacio    
+                     -Debe haber un  solicitante en el autodromo con el id **numeroDeId**       
+        Parametros:numeroDeID - Numero - Es la identificacion de cada solicitante 
+        Observacion: Es un recorrido de busqueda sabiendo que esta
+                     sobre las celdas del tablero
+                     buscando el solicitante con el Id **numeroDeId** 
+    */    
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este,Norte) 
+    while ( not esSolicitanteConId_(numeroDeId)  ){
+        MoverAlVehiculoASiguienteUbicacionEnUnRecorridoAl_Y_(Norte, Este)
+    }
+    SubirAlPasajeroConId_AlVehiculo(numeroDeId)
+}
+procedure SubirAlSolicitanteConID_AlVehiculo(numeroDeId){
+    /*
+        Proposito: Subir al solicitante con el id *numeroDeId* al vehiculo para llevarlo al destino.Subir al solicitante implica pasarlo a pasajero
+        Precondicion:- El cabezal debe estar sobre el vehiculo y sobre le solicitante
+                     - El vehiculo debe estar vacio
+                     -El id del solicitante debe se igual a **numeroDeId** 
+                     
+        Parametro:numeroDeID - Numero - Es la identificacion del solicitante para recogerlo y llevarlo a destino
+        
+    */
+    Sacar_DeColor_(numeroDeId, solicitante())
+    Poner_DeColor_(numeroDeId, pasajero())
+}
+
+function solicitante(){
+        /*
+        Proposito:Describe el color representado por el solicitante
+        Precondicion. ninguno
+        Tipo: color
+    */
+    return(Azul)
+}
+function pasajero(){
+    /*
+        Proposito:Describe el color representado por el pasajero
+        Precondicion. ninguno
+        Tipo: color
+    */
+    return(Verde)
+}
+function esSolicitanteConId_(numeroDeId) {
+    /*
+        Proposito: Indica si el id del solicitante actual es igual a **numeroDeId**
+        Precondicion:ninguno
+        Parametro: numeroDeId - Numero - Es la identificacion del solicitante a verificar
+        Tipo: Booleano
+    */
+    
+    return (nroBolitas(solicitante()) == numeroDeId )
+}
+
+function cantidadDeSolicitantesEsperando(){
+    /*
+        Proposito:Describe la cantidad de solicitantes en el mapa esperando por que el vehículo los pase a recoger.
+        Precondicion:ninguna
+        Tipo:NUmero
+        Observacion: Es un recorrido de acumulacion
+                     sobre las ubicaiones del mapa
+                     acumulando a todos los solicitantes que estan esperando un vehiculo para recogerlos y llevarlos a destino
+    */
+    cantidadDeSolicitantesAlMomento := 0
+    IrAPrimeraUbicacionEnUnRecorridoAl_Y_(Este,Norte)  
+    while( haySiguienteUbicacionEnUnRecorridoAl_Y_(Norte, Este) ){
+        cantidadDeSolicitantesAlMomento :=cantidadDeSolicitantesAlMomento + unoSi_CeroSiNo( haySolicitanteEnLaUbicacionActual() )
+        IrASiguienteUbicacionEnUnRecorridoAl_Y_(Norte, Este)
+    }
+    return( cantidadDeSolicitantesAlMomento + unoSi_CeroSiNo( haySolicitanteEnLaUbicacionActual() ))
+}
+function  haySiguienteUbicacionEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /*
+        Proposito:indica si hay una siguiente ubicacion en un recorrido hacia el *dirPrincipal* o el  *dirSecundaria*
+        Precondicion:la direccion *dirPrincipal* y *dirsecundaria* no puede ser opuestas  ni iguales
+        Parametros:*dirPrincipal* *dirSecundaria* Son las direcciones en la que se  tiene que mover
+        Tipo:Booleano
+    */
+    return(puedeMover(dirPrincipal) || puedeMover(dirSecundaria) )
+}
+
+function haySolicitanteEnLaUbicacionActual(){
+    /*
+        Proposito: Indica si en la ubicacion actual hay un solicitante esperando a un vehiculo
+        Precondicion: Ninguno
+        Tipo: Booleano
+    */
+    return (hayBolitas(Verde))
+}
+
+procedure  MoverAlVehiculoASiguienteUbicacionEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /*
+    /*
+        Proposito: Ubicar el vehiculo en siguiente ubicacion del mapo en direccion *dirPrincipal* y *dirSecundaria* desde la ubicacion actual.
+        Precondiciones: *dirPrincipal* y *dirSecundaria* no pueden ser  opuestas ni iguales.
+        Parametros: *dirPrincipal* : Direccion - primera direccion a ubicar el vehiculo para la siguiente celda del mapa.
+                    *dirSecundaria* : Direccion - segunda direccion a ubicar el vehiculo para la siguiente celda del mapa.
+    */    
+    if (puedeMover(dirPrincipal)) {
+        MoverVehiculoHaciaEl_(dirPrincipal)
+    } else {
+        MoverVehiculoHaciaEl_(dirPrincipal)
+        MoverAlVehiculoAlBorde_(opuesto(dirPrincipal))  
+    }
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

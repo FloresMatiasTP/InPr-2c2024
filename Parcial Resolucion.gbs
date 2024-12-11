@@ -1,0 +1,144 @@
+-------------------------------------------------------------------------EJERCICIO 1    -------------------------------------------
+function esCasillaSegura(){
+    /*
+        Prop: Indicar si la casilla actual es segura
+        Preco:ninguna 
+        Tipo:Booleano
+    */
+    return(estaCubierta() && not hayVecinasCubiertasOConIndicadores() )
+}
+function hayVecinasCubiertasOConIndicadores(){
+     /*
+        Prop: Indicar si la celda actual tiene alguna celda que este cubierta o que tenga un indicador
+        Precondicion:ninguna 
+        Tipo:Booleano
+        Observacion: Es un recorrido de busqueda sobre las direcciones de la celda actual
+                     buscando una direccion hacia la cual  haya unavecina cubierta o con indicador desde la celda actual 
+    */
+    direccionActual := minDir()
+    while(direccionActual /= maxDir && not hayVecinaCubiertaOConIndicadorAl_(direccionActual)){
+        direccionActual := siguiente(direccionActual)    
+    }
+    return (hayVecinaCubiertaOConIndicadorAl_(direccionActual))
+}
+function hayVecinaCubiertaOConIndicadorAl_(direccionAEvaluar){
+    /*
+        Prop: Indicar si la celda actual  tiene una celda vecina al **direccionAEvaluar** cubierta o que tenga un indicador
+        Precondicion:ninguna
+        Parametro:**direccionAEvaluar**: Direccion -  Es la direccion hacia la cual se indica si hay una celda vecina a la actual que este cubierta o que tenga un indicador
+        Tipo:Booleano
+    */
+    return (hayVecinaCubiertaAl(direccionAEvaluar) || hayVecinaConIndicadorAl_(direccionAEvaluar))
+}
+function hayVecinaConIndicadorAl_(direccionAEvaluar){
+    /*
+        Prop: Indicar si la celda actual  tiene una celda vecina al **direccionAEvaluar**  que tenga un indicador
+        Precondicion:ninguna
+        Parametro:**direccionAEvaluar**: Direccion -  Es la direccion hacia la cual se indica si hay una celda vecina a la actual  que tenga un indicador
+        Tipo:Booleano
+    */
+    Mover(direccionAEvaluar)
+    return(puedeMover(direccion )  && hayIndicadorEnVecinaAl_(direccionAEvaluar))
+}
+function hayIndicadorEnVecinaAl_(direccion){
+    /*
+        Prop: Indicar si la celda vecina al   **direccionAEvaluar** de la celda actual tiene un indicador
+        Precondicion:Hay Una celda vecina al **direccion* de la celda  actual
+        Parametro:**direccionAEvaluar**: Direccion -  Es la direccion hacia la cual se encuentra la celda la celda vecina para al cual se indica si tiene un indicador
+        Tipo:Booleano
+    */
+    Mover(direccion)
+    return(not estaCubierta() &&hayIndicadorAca())
+}
+-------------------------------------------------------------------------EJERCICIO 2-------------------------------------------
+procedure Arriesgar(){
+    /*
+        Proposito:Revelar la casilla cubierta mas riesgosa de al grilla
+        Precon:Existe  una casilla mas riesgosa que el resto en toda la grilla
+               La casilla mas riesgosa esta cubierta
+    */
+    IrALaCeldaMasRiesgosa()
+    Revelar()
+}
+procedure IrALaCeldaMasRiesgosa(){
+    /*
+        Proposito:Ubicar el cabezal en la celda mas riesgosa de la grilla
+        Precon:-Existe  una casilla mas riesgosa que el resto en toda la grilla
+               -La casilla mas riesgosa esta cubierta
+        Observacion: Es un recorrido de busqueda sabiendo que esta sobre las celdas del/la tablero/grilla
+                     buscando la celda mas riesgosa de la grilla
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    while(not eslaCeldaMasRiesgosaDeLaGrilla()){
+         IrASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+}
+function eslaCeldaMasRiesgosaDeLaGrilla(){
+    /*
+        Prop: Indicar si la celda actual es la celda mas riesgosa de la grilla
+        Precondicion:Existe una celda mas riesgosa que el resto en la grilla
+        Tipo:Booleano
+    */
+    return(riesgoAca() == elRiesgoMaximoDeLaGrilla()  )
+}
+function riesgoAca(){
+     /*
+        Prop: Describe el riesgo de la celda actual
+        Precondicion:ninguna
+        Tipo:Numero
+        observaciones: Es un recorrido de acumulacion sobre las direcciones
+                      contando aquellas hacia las que haya una vecina revelada y con indicador
+    */
+    direccionActual := minDir()
+    riesgoAactual := unoSi_CeroSiNo(hayVecinaReveladaConIndicadorAl_(direccionActual)
+    while(direccionActual /= maxdir()){
+        direccionActual := siguiente(direccionActual) 
+        riesgoActual :=  riesgoActual + unoSi_CeroSiNo(hayVecinaReveladaConIndicadorAl_(direccionActual)
+    }
+    
+    return(riesgoActual)
+}
+function hayVecinaReveladaConIndicadorAl_(direccion){
+    /*
+        Prop: Indica si hay uan celda vecina al *direccion* que este revelada y contenga un indicador
+        Parametro: *direccion:* direccion hacia la cual se indica si hay uan celda vecina y con indicador
+        Tipo:Booleano
+        
+    */
+    return(puedeMover(direccion) &&  laVecinaAl_EstaReveladaYTieneIndicador(direccion))
+}
+function laVecinaAl_EstaReveladaYTieneIndicador(direccion){
+    /*
+        Prop: Indica si la celda vecina al *direccion* esta revelda y tiene indicador
+        Parametro: *direccion:* direccion hacia la cual se encuentra la celda vecina para la cual se indica si esta revelada y tiene indicador
+        Precondicion: Debe haber al menos una celda vecina al *direccion*
+        Tipo:Booleano
+        
+    */
+    Mover(dirccion)
+    return(estaRevelada() && hayIndicadorAca() )
+}
+function estaRevelada(){
+    /*
+        Propo: Inica si la celda actual esta revelada
+        Precondicion: ninguna
+        Tipo:booleano
+    */
+    return (not estaCubierta()
+}
+function elRiesgoMaximoDeLaGrilla(){
+    /*
+        Prop: Describe el riesgo maximo de la grilla
+        Precondicion:ninguna
+        Tipo:Numero
+        Observacion: Es un recorrido de minimo/maximo sobre las celdas de la grilla
+                     maximizando el riesgo de cada celda.
+    */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    riesgoMaximoAlMomento := riesgoAca()
+    while(haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+        riesgoMaximoAlMomento := maximoEntre_Y_(riesgoAca() , riesgoMaximoAlMomento)
+    }
+    return(riesgoMaximoAlMomento)
+}

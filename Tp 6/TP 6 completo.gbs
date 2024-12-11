@@ -1,0 +1,262 @@
+program {
+    Poner_DeColor_(90,Negro)
+    RealizarCorridaCambiaria()
+}
+
+
+/// Ejercicio 3
+
+procedure SacarUnaFicha_SiSePuede(colorDeLaFicha){
+    /*
+        Proposito:Sacar una ficha del color **colorDeLaFicha** a siempre y
+                  cuando la misma esté  en la celda actual
+        Parametros:**colorDeLaFicha**: Color - Indica el color de la ficha a sacar
+    */
+    if(hayBolitas(colorDeLaFicha)){
+        Sacar(colorDeLaFicha)
+    }
+}
+
+procedure DesempatarParaElLocal_Contra_(colorDelLocal,colorDelVisitante){
+    /*
+        Proposito:Sumar un punto al jugador con color colorDelLocal solamente en el caso en que
+                  la celda actual contiene la misma cantidad de bolitas de ambos colores.
+
+        Parametros:**colorDelLocal** **colorDelVisitante**: Colores - Son los colores de los jugadores
+                   local y visitante respectivamente
+    */
+    if(nroBolitas(colorDelLocal) == nroBolitas(colorDelVisitante)){
+        Poner(colorDelLocal)
+    }
+    
+}
+procedure ExpandirBacteriaDeLaColonia(){
+    /*
+        Proposito:
+        Precondicion:
+        Parametros:
+    
+    */
+    if(hayCultivoDeBacteria()){
+        Poner(Verde)
+        Sacar_DeColor_(2, Rojo)
+    }
+    
+}
+function hayCultivoDeBacteria(){
+    return ((nroBolitas(Rojo)==2) && (nroBolitas(Verde)==1))
+}
+
+procedure PonerFlecha_AlNorteSiCorresponde(colorDeLaFlecha){
+    /*
+        Proposito:
+        Precondicion:
+        Parametros:
+    */
+    if(puedeMover(Norte)){
+        Mover(Norte)
+        Poner(colorDeLaFlecha)
+    }
+    
+} 
+
+//////////////////////////////       Ejercicio 4            //////////////////////////////////777777
+
+
+procedure Poner_Si_(color, condición){
+    /*
+        Proposito: Poner una bolita de color **color** en la celda actual si se cumple la
+                   la condicion **condicion**
+        Precondicion:ninguna
+        Parametros:**color**: Color - Es color de la bolita
+    */
+    if(condicion){
+        Poner(color)
+    }
+}
+procedure Sacar_Si_(color, condición){
+    /*
+        Proposito: Sacar una bolita del color **color** si se la condicion que **condicion**
+        Precondicion:Ninguna
+        Parametros:**color**: Color - Indica el color de la bolita que se va a sacar 
+    */
+    if(condición){
+        Sacar(color)
+    }
+}
+
+procedure  Mover_Si_(dirección, condición){
+    /*
+        Proposito:Mover el cabezal hacia la direccion **direccion** si se cumple la condicion dada
+        Precondicion:Ninguna
+        Parametros:**direccion**:Direccion - Es la direccion a donde se va a mover el cabezal
+    */
+    if(condicion){
+        Mover(direccion)
+    }
+} 
+
+///// Ejercicio 5
+
+procedure SacarExactamente_BolitasDeColor_(cantidadASacar, colorASAcar){
+    /*
+        Proposito:Sacar exactamente **cantidadASacar** bolitas del color **colorASacar**
+                  si existe bolitas de ese color
+        Precondicion:ninguna
+        Parametros:**cantidadASacar**:Numero - Indica la cant de bolitas que se van a sacar
+                   **colorASacar**: Color - Indica el color de la bolita que se va a sacar
+    */
+    repeat(cantidadASacar){
+        Sacar_Si_(colorASacar, hayBolitas(colorASacar))
+    }
+}
+
+------EJERCICIO 6 --------------VAMOS AL BANCO PARTE 1--------------------------
+//bolitas negras para pesos argentinos.
+//bolitas verdes para dólares estadounidenses.
+//bolitas azules para euros.
+//bolitas rojas para yuanes chinos.
+
+procedure Depositar_EnMoneda_ComoPesos(cantidadADepositar, moneda){
+    /*
+        Proposito:Agregar a la cuenta la cantidad de pesos que resulte de convertir *cantidadADepositar*
+                  segun las tarifas correspondientes de la *moneda*
+        Proposito:Depositar **cantidadADepositar** de la moneda **moneda** en pesos en la cuenta bancaria
+        Precondicion:La celda actual representa a una cuenta bancaria
+        Parametros:**cantidadADepositar**: Numero - Indica la cantidad de peso
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras       
+        Observaciones:  Los Yuanes se representan con bolitas Rojas
+                        Los Dolares se representar con bolitas Verdes
+                        Los Euros se representan con bolitas Azules
+                        Los Pesos se representar con bolitas Negras
+    */
+    if(moneda == Verde){
+        Depositar_EnMoneda_(cantidadADepositar*80,Negro)
+    }
+    elseif (moneda == Azul){
+        Depositar_EnMoneda_(cantidadADepositar * 90,Negro)
+    }else{
+        Depositar_EnMoneda_(cantidadADepositar * 12,Negro)
+    }
+}
+
+procedure Depositar_EnMoneda_(cantidadADepositar,moneda){
+    /*  Proposito:Agrega a la cuenta *cantidadADepositar* de *moneda*
+        Precondicion:La celda actual representa a una cuenta bancaria
+        Parametros:**cantidadADepositar**: Numero - Indica la cantidad de peso
+                   **moneda**: Color - Indica alguna de las 4 monedas 
+                   */
+    Poner_DeColor_(cantidadADepositar , moneda)
+}
+
+
+-----------------------------------------
+
+procedure ExtraerHasta_EnMoneda_(cantidadAExtraer, moneda){
+    /*
+        Proposito:Extraer de la cuenta *cantidadAExtraer* de *moneda* de la cuenta bancaria, en caso de 
+        que haya menos dinero que se quiere extraer, se extrae todo el dinero
+        Precondicion:
+        Parametros:*cantidadAExtraer*
+                    *moneda* : 
+        
+    */
+    if(nroBolitas(moneda)< cantidadAExtraer){
+        Extraer_EnMoneda(nroBolitas(moneda),moneda)
+    } else{                 
+        Extraer_EnMoneda(cantidadAExtraer,moneda)
+    }
+    
+}
+procedure Extraer_EnMoneda(cantidadAExtraer,monedaAExtraer){
+    /*  Proposito:Extraer de la cuenta *cantidadAExtraer* en *monedaAExtraer* de la cuenta
+        Precondicion:La celda actual representa a una cuenta bancaria
+                    hay suficiente dinero en *monedaAExtraer* en la ceunta bancaria
+        Parametros:**cantidadAExtraer**: Numero - Indica la cantidad de peso
+                   **moneda**: Color - Indica alguna de las 4 monedas 
+    */
+     Sacar_DeColor_(cantidadAExtraer, monedaAExtraer)
+}
+
+procedure ConvertirHasta_PesosA_(pesosAConvertir, moneda){
+    /*
+        Proposito: Convierte la cantidad de *pesosAconvertir* en *moneda*, en casos de que no hubiera la cantidad
+            suficiente de pesos, convierte todos los pesos que hay en la ceunta bancaria
+        Precondicion:La celda actual representa a una cuenta bancaria
+        Parametros:**pesosAConvertir**: Numero - Indica la cantidad de pesos a convertir
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras       
+
+    */
+    DepositarHasta_PesosEnMoneda_(pesosAConvertir, moneda)
+    ExtraerHasta_EnMoneda_(pesosAConvertir, Negro)
+}
+
+procedure  DepositarHasta_PesosEnMoneda_(pesosAConvertir, moneda){
+    /*
+        Proposito: Agregar a la cuenta la cantidad de *moneda* que resulte de convertir *pesosAconvertir*, segun
+                    la conversion, si no alcanza convierte todos los pesos que haya
+        Precondicion: La celda actual es una cuenta bancaria
+        Parametros:**pesosAConvertir**: Numero - Indica la cantidad de pesos a convertir
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras 
+    */
+    if(nroBolitas(Negro) < pesosAConvertir){
+        DepositarPesos_EnMoneda_(nroBolitas(Negro),moneda)
+    } else {
+        DepositarPesos_EnMoneda_(pesosAConvertir,moneda)
+    }
+    
+}
+
+procedure DepositarPesos_EnMoneda_(pesosAConvertir,moneda){
+    /*
+        Proposito: Convierte los pesos de todas las cuentas a dolares
+        Precondicion: Debe tener al menos 1 fila y 10 columnas
+                      Cada celda del tablero representa a una ceunta bancaria
+                      El cabezal debe estar en el origen, esquina SurOeste
+        Parametros:**pesosAConvertir**: Numero - Indica la cantidad de pesos a convertir
+                   **moneda**: Color - Indica alguna de las 3 monedas extranjeras 
+    */
+    
+    if(moneda == Verde){
+        Depositar_EnMoneda_(pesosAConvertir div 100 , moneda )
+    } elseif (moneda == Azul){
+        
+        Depositar_EnMoneda_(pesosAConvertir div 115 , moneda )
+    } else{
+        Depositar_EnMoneda_(pesosAConvertir div 17 , moneda )
+    }
+}
+
+
+
+procedure RealizarCorridaCambiaria(){
+    /*
+        Proposito: Convierte los pesos de todas las cuentas a dolares
+        Precondicion: Debe tener al menos 1 fila y 10 columnas
+                      Cada celda del tablero representa a una ceunta bancaria
+                      El cabezal debe estar en el origen, esquina SurOeste
+    */
+    repeat(9){
+        ConvertirTodosPesosaDolares()
+        IrASigCuenta()
+    }
+    ConvertirTodosPesosaDolares()
+
+}
+
+procedure ConvertirTodosPesosaDolares(){
+    /*
+        Procedure:Convierte todos los pesos de la ceunta bancaria a dolares
+        Precondicion:Cada celda del tablero representa a una cuenta bancaria
+    */
+    ConvertirHasta_PesosA_(nroBolitas(Negro), Verde)
+    
+}
+
+procedure IrASigCuenta(){
+    /*
+        Proposito: Mueve le cabezal hacia la sig cuenta al este
+        Precondicion: Debe haber una cuenta bancaria al este 
+    */
+    Mover(Este)
+}

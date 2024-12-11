@@ -1,0 +1,218 @@
+type Universo is record {
+    field nombre // String
+    field galaxias // [Galaxia]
+}
+type Galaxia is record {
+    field nombre // String
+    field planetas // [Planeta]
+}
+type Planeta is record {
+    field nombre // String
+    field continentes // [Continente]
+}
+type Continente is record {
+    field nombre // String
+    field países // [País]
+}
+type País is record {
+    field nombre // String
+    field provincias // [Provincia]
+}
+type Provincia is record {
+    field nombre // String
+    field ciudades // [Ciudad]
+}
+type Ciudad is record {
+    field nombre // String
+    field barrios // [Barrio]
+}
+type Barrio is record {
+    field nombre // String
+    field calles // [Calle]
+}
+type Calle is record {
+    field nombre // String
+    field edificios // [Edificio]
+}
+type Edificio is record {
+    field nombre // String
+    field pisos // [Piso]
+}
+type Piso is record {
+    field número // Número
+    field habitaciones // [Habitación]
+}
+type Habitación is record {
+    field tipoDeHabitación // TipoDeHabitación
+    field habitantes // [Habitante]
+}
+type Habitante is record {
+    field nombre // String
+    field edad // Número
+}
+type TipoDeHabitación is Variant {
+    case Dormitorio {}
+    case Baño {}
+    case Cocina {}
+    case SalaDeEstar {}
+    case Templo {}
+}
+
+function universo1(){
+    return(Universo(nombre <- universo1, galaxia <- [] ))
+}
+
+//Escribir la función cantidadDeBañosEn_ que dado un multiverso (es decir, una lista de 
+//universos, obviamente) devuelve la cantidad de baños que hay en dicho multiverso.
+
+
+function singular_Si_(elemento, condición) {
+     /* PROPÓSITO: Describir una lista según el valor de la condición dada. 
+                  Si es verdadera, describe la lista singularcon **elemento**. Si no, describe la lista vacía.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * elemento: De un tipo cualquiera.
+            * condición: Booleano.
+        TIPO: Lista del tipo de **elemento**.
+    */
+    return (choose [elemento] when (condición)
+                [] otherwise)
+}
+
+function cantidadDeBañosEn_(unMultiverso){
+    /*
+        Pop:Describe la cantidad de baños que hay en en el multiverso *unMultiverso*
+        Prec:ninguna
+        Tipo:Numero
+        Parametro:
+        Obs:Es un recorrido de acumulacion 
+            sobre la lista de universos
+            acumulando la cantidad de baños que hay en los universos 
+    */
+    cantidadDeBañosAlMomento := 0
+    foreach universo in unMultiverso{
+        cantidadDeBañosAlMomento :=  cantidadDeBañosAlMomento ++  cantidadDeBañosEnElUniverso_(universo) 
+    }
+    return(cantidadDeBañosAlMomento)
+}
+
+function cantidadDeBañosEnElUniverso_(unUniverso){
+    /*
+        Pop:Describe la cantidad de baños que hay en en el universo *unUniverso*
+        Prec:ninguna
+        Tipo:Numero
+        Parametro:
+        Obs:Es un recorrido de acumulacion 
+            sobre la galaxias del universo *unUniverso*
+            acumulando la cantidad de baños que hay en el universo 
+    */
+    cantidadDeBañosEnElUniversoAlMomento := 0
+    foreach galaxia in unUniverso{
+        cantidadDeBañosEnElUniversoAlMomento :=  cantidadDeBañosEnElUniversoAlMomento ++  cantidadDeBañosEnElPlaneta_(galaxia) 
+    }
+    return(cantidadDeBañosEnElUniversoAlMomento)
+}
+
+
+
+
+
+function cantidadDeBañosEnLaGalaxiaDelUniverso_(unUniverso){
+    /*
+        Prop:Describe la cantidad de baños que hay en la galaxia del universo *unUniverso*
+        Prec:ninguno
+        Tipo:Numero
+        Parametro:
+        Obs:Es un recorrido de acumulacion 
+            sobre los planetas *unUniverso*
+            acumulando la cantidad de baños que hay en la galaxia 
+    */
+    cantidadDeBañosEnElUniversoAlMomento := 0
+    foreach galaxia in galaxias(unUniverso){
+        cantidadDeBañosEnElUniversoAlMomento :=  cantidadDeBañosEnElUniversoAlMomento ++  cantidadDeBañosEnElPlaneta_(galaxia) 
+    }
+    return(cantidadDeBañosEnElUniversoAlMomento)
+}
+
+
+
+
+
+function hayAlguienDeNombre_ConMas_De_AñosEn_(){
+    
+    /*
+        Observacinm: Es un recorrido de busqueda
+                     sobre el multiverso
+                     buscando si hay algun habitante con el nombre y la edad mayor a la dadd 
+    */
+}
+
+/*
+    Obs: es un recorrido de busqueda
+         sobre las galaxias del universo
+         buscando un habitatnte mayor de edad con el nomrbre dado
+         
+    OBS: Es un reocrrido de busqueda
+         sobre los planteas de la galaxia dada
+         buscando un habitante con el nombre dado y edad mayor a la dada
+         
+    Obs: Es un recorrido de busqueda   
+         sobre los continente del planeta
+          buscando un habitante con el nombre dado y edad mayor a la dada
+          
+    Obs: Es un recorrido de busqueda   
+         sobre los paises del continente
+          buscando un habitante con el nombre dado y edad mayor a la dada
+          
+    Obs: Es un recorrido de busqueda   
+         sobre los las provinvicas de los paises
+          buscando un habitante con el nombre dado y edad mayor a la dada
+          
+    Obs: Es un recorrido de busqueda   
+         sobre las ciudades  de las provincias
+          buscando un habitante con el nombre dado y edad mayor a la dada
+    
+    Obs: Es un recorrido de busqueda   
+         sobre los barrios  de las ciudades
+          buscando un habitante con el nombre dado y edad mayor a la dada
+    
+    Obs: Es un recorrido de busqueda   
+         sobre las calles  de los barrios
+          buscando un habitante con el nombre dado y edad mayor a la dada 
+    
+    Obs: Es un recorrido de busqueda   
+         sobre los edificios  de las calles
+          buscando un habitante con el nombre dado y edad mayor a la dada       
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

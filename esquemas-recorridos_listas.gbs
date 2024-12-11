@@ -1,0 +1,130 @@
+/*
+RECORRIDOS EN LISTAS
+
+Recorrido de transformación
+---------------------------
+
+function transformada(lista) {
+    // lista : Lista de A
+    // TIPO : Lista de B  longitud(lista) == longitud(transformada(lista))
+    transformada := []
+    foreach elemento in lista {
+        transformada := transformada ++
+                [elemento_Transformado(elemento)]
+    }
+    return (transformada)
+}
+
+function elemento_Transformado(elemento) {
+    // elemento : A
+    // TIPO : B
+}
+
+
+Recorrido de filtro
+-------------------
+
+function filtrada(lista) {
+    // lista : Lista de A
+    // TIPO : Lista de A
+    // longitud(lista) >= longitud(filtrada(lista))
+    filtrada := []
+    foreach elemento in lista {
+        filtrada := filtrada ++
+                singular_Si_(elemento, debeAgregarse_(elemento))
+    }
+    return (filtrada)
+}
+
+function singular_Si_(elemento, condicion) {
+    return ( choose
+        [elemento] when (condicion)
+        [] otherwise
+    )    
+}
+
+function debeAgregarse_(elemento) {
+    // elemento : A
+    // TIPO : Booleano
+}
+
+
+Recorrido de acumulacion
+------------------------
+
+function acumulado(lista) {
+    // lista : Lista de A
+    // TIPO : Número
+    acumulado := 0
+    foreach elemento in lista {
+        acumulado := acumulado + 
+                valorPara_(elemento)
+    }
+    return (acumulado)
+}
+
+function valorPara_(elemento) {
+    // elemento : A
+    // TIPO : Número
+}
+
+
+Recorrido de búsqueda (sin saber si está)
+-----------------------------------------
+
+function busquedaSinSaber(lista) {
+    // lista : Lista de A
+    // TIPO : Booleano
+    restantesPorBuscar := lista
+    while(not esVacía(restantesPorBuscar) &&
+                not esElemento_elBuscado(primero(restantesPorBuscar))) {
+        restantesPorBuscar := sinElPrimero(restantesPorBuscar)
+    }
+    return (not esVacía(restantesPorBuscar))
+}
+
+function esElemento_elBuscado(elemento) {
+    // elemento : A
+    // TIPO : Booleano
+}
+
+
+Recorrido de búsqueda (sabiendo está)
+-------------------------------------
+
+function busquedaSabiendo(lista) {
+    // lista : Lista de A
+    // TIPO : A
+    // PREC: El elemento buscado está en la lista
+    restantesPorBuscar := lista
+    while(not esElemento_elBuscado(primero(restantesPorBuscar))) {
+        restantesPorBuscar := sinElPrimero(restantesPorBuscar)
+    }
+    return (primero(restantesPorBuscar))
+}
+
+function esElemento_elBuscado(elemento) {
+    // elemento : A
+    // TIPO : Booleano
+}
+
+Recorrido de máximo-mínimo
+--------------------------
+
+function máximoOMínimo(lista) {
+    // lista : Lista de A
+    // TIPO : A
+    // PREC: La lista no es vacía
+    elMás := primero(lista)
+    foreach elemento in sinElPrimero(lista) {
+        elMás := elMasEntre_Y_(elMás, elemento)
+    }
+    return (elMás)
+}
+
+function elMasEntre_Y_(primero, segundo) {
+    // primero : A
+    // segundo : A
+    // TIPO : A
+}
+*/

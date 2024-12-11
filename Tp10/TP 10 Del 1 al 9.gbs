@@ -1,0 +1,800 @@
+
+//Ejercicio 1
+type DiaDeLaSemana is variant {
+    /*
+        Proposito: Modelar los dis de la semana
+        Precondicion:Ninguna 
+    */
+    case Lunes {}
+    case Martes {}
+    case Miercoles {}
+    case Jueves {}
+    case Viernes {}
+    case Sabado {}
+    case Domingo {}
+}
+function diaSiguiente_(unDiaDeLaSemana){
+    /*
+        Proposito: Describir el siguiente dia de **unDiaDeLaSemana** 
+        Precondicion:
+        Tipo:DiaDeLaSemana
+    */
+    return( choose  Martes    when ( unDiaDeLaSemana == Lunes)
+                    Miercoles when (unDiaDeLaSemana ==Martes)
+                    Jueves    when (unDiaDeLaSemana ==Miercoles)
+                    Viernes   when (unDiaDeLaSemana ==Jueves)
+                    Sabado    when (unDiaDeLaSemana ==Viernes)
+                    Domingo   when (unDiaDeLaSemana ==Sabado)
+                    Lunes     otherwise
+           )
+}
+function díaPrevio_(unDiaDeLaSemana){
+    /*
+        Proposito: Describir el dia previo  de **unDiaDeLaSemana** 
+        Precondicion:ninguno
+        Tipo:DiaDeLaSemana
+    */    
+     return( choose Lunes     when ( unDiaDeLaSemana == Martes)
+                    Martes    when ( unDiaDeLaSemana == Miercoles)
+                    Miercoles when (unDiaDeLaSemana ==Jueves)
+                    Jueves    when (unDiaDeLaSemana ==Viernes)
+                    Viernes   when (unDiaDeLaSemana ==Sabado)
+                    Sabado    when (unDiaDeLaSemana ==Domingo)
+                    Domingo   otherwise
+           )
+}
+function esDíaDeFinDeSemana_(unDiaDeLaSemana){
+    /*
+        Proposito: Indica si *unDiaDeLaSemana* es unos de los dias del fin de semana 
+        Precondicion:Ninguna
+        Parametro: unDiaDeLaSemana:DiaDeLaSemana
+        Tipo: Booleano
+    */
+    return ( unDiaDeLaSemana == Sabado || unDiaDeLaSemana == Domingo )
+}
+-----------------------------------------------             Ejercicio 2         ---------------------------------------------------- 
+type PartidoPolitico is variant {
+    /*
+        Proposito: Modelar los partidos politicos de un pais
+        
+    */
+    case DemocraciaPorLaVerdad  {}
+    case UnidosPorLaRepública   {}
+    case LiberalesPorLaLibertad {}
+    case IzquierdaDeLosObreros  {}
+}
+//Ejercicio 2 A
+function tieneMásVotantes_Que_(primerPatidoPolitico, segundoPartidoPolitico){
+    /*
+        Prop: Indica si **primerPatidoPolitico** tiene mas votos que **segundoPartidoPolitico**
+        Precon: ninguna
+        Tipo:Booleano
+        Parametros: **primerPatidoPolitico**: PartidoPolitico
+                    **segundoPartidoPolitico**: PartidoPolitico
+    */
+    return(cantidadDeVotosDe_(primerPatidoPolitico) > cantidadDeVotosDe_(segundoPartidoPolitico))
+}
+//Ejercicio 2 B
+function elQueTieneMásVotos(){
+    /*
+        Prop: Describe el partido politico con mas votantes 
+        Precon: ninguna
+        Tipo:PartidoPolitio
+        Observacion: Es un recorrido de busqueda  sobre los partidos politicos 
+                     en donde se busca el PP que tenga mas votantes
+    */
+    partidoPoliticoActual := DemocraciaPorLaVerdad
+    partidoPoliticoConMasVotosAlMomento := partidoPoliticoActual
+    while (partidoPoliticoActual /=  IzquierdaDeLosObreros){
+        partidoPoliticoActual := partidoPoliticoSiguienteDe_(partidoPoliticoActual)
+        partidoPoliticoConMasVotosAlMomento := partidoConMasVotosEntre_Y_(partidoPoliticoActual, partidoPoliticoConMasVotosAlMomento)
+    }
+    return(partidoPoliticoConMasVotosAlMomento)
+}
+
+function partidoPoliticoSiguienteDe_(unPartidoPolitico){
+    /*
+        Proposito: Describe el siguiente Partido Politico de **unPartidoPolitico**
+        Precondicion:Ninguna
+        Parametro: **unPartidoPolitico**: PartidoPolitico
+        Tipo: PartidoPolitico
+    */
+     return( choose UnidosPorLaRepública   when (unPartidoPolitico == DemocraciaPorLaVerdad )
+                    LiberalesPorLaLibertad when (unPartidoPolitico == UnidosPorLaRepública)   
+                    IzquierdaDeLosObreros  when (unPartidoPolitico ==LiberalesPorLaLibertad)  
+                    DemocraciaPorLaVerdad  otherwise
+     )
+}
+function partidoConMasVotosEntre_Y_(primerPatidoPolitico, segundoPartidoPolitico){
+    /*
+        Propo: Describe el PP que tenga mas votos entre **primerPatidoPolitico** y **segundoPartidoPolitico**
+        Prec:Ninguno
+        Parametro: **primerPatidoPolitico**: PartidoPolitico
+                    **segundoPartidoPolitico**: PartidoPolitico
+        Tipo:PartidoPolitico
+    */
+    return ( choose  primerPatidoPolitico when (cantidadDeVotosDe_(primerPartidoPolitico) > cantidadDeVotosDe_(segundoPartidoPolitico))
+                    segundoPartidoPolitico otherwise 
+            )
+}
+//Ejercicio 2 C
+ function habráBallotage (){
+     /*
+        Proposito:Indica si en estas elecciones habrá ballotage
+        Precondicion:
+        Tipo:Booleano
+     */
+     return( cantidadDeVotosDe_(elQueTieneMasVotos()) < (cantidadTotalDeVotos() div 2) && hayMenosDe10PuntosEntre_Y_() )
+ }
+function hayMenosDe10PuntosEntre_Y_(){
+    /*
+        Proposito: indica si hay menos de 10 puntos para el balotage
+        Precondiciones: ninguna
+        TIPO: Booleano
+    */
+    puntosAlMomento:= cantidadDeVotosDe_(elQueTieneMasVotos()) - cantidadDeVotosDe_(elSegundoQueTieneMasVotos())
+    return (puntos < (cantidadTotalDeVotos() div 10))
+}
+function elSegundoQueTieneMasVotos(){
+    /*
+        Proposito: Describe el segundo partido politico con mas votos. si hay dos partidos con la misma cantidad retorna el primero en el recorrido
+        Precondiciones: Ninguno
+        TIPO: PartidoPolitico
+    */
+   partidoARotar:= siguientePartido_(elQueTieneMasVotos())
+   partidoConMasVotos:= siguientePartido_(elQueTieneMasVotos())
+    repeat (2){
+        partidoConMasVotosAlMomento:= partidoConMasVotosEntre_Y_(partidoConMasVotos, siguientePartido_(partidoARotar))
+        partidoARotar:= siguientePartido_(partidoARotar)
+   }
+   return (partidoConMasVotos) 
+}
+function cantidadTotalDeVotos(){
+    /*
+        Propo: Describe la cantida total de votos
+        Precon:Ninguna:
+        Tipo: Numero
+    */
+    cantidadTotalDeVotosAlMomento:=0
+    partidoActual:= Democracia_por_la_Verdad
+    repeat (4){
+        cantidadTotalDeVotosAlMomento:= cantidadTotalDeVotosAlMomento + cantidadDeVotosDe_(partidoActual)
+        partidoActual:=siguientePartido_(partidoActual)
+    }
+    return (cantidadTotalDeVotosAlMomento)
+}
+program{
+     return(elQueTieneMásVotos() )
+     
+}
+----------------------------------------------     Ejercicio3       ----------------------------------------------------------------------------- 
+type Carta is record{
+    /*
+        Proposito: Modelar las cartas españolas
+        INV.REP.:el numero de estar entre 1 y 12
+    
+    */
+    field palo // Palo
+    field numero // Numero
+    
+}
+type Palo is variant{
+    /*
+        Proposito: Modelas los palos de las cartas
+        Precondicion: ninguna
+    */
+    case Basto {}
+    case Espada {}
+    case Oro {}
+    case Copa {}
+
+}
+function anchoDeEspadas(){
+    /*
+        Proposito: Describe la carta 1 de Espadas.
+        Precondicion:Ninguna
+        Tipo: Carta
+    */
+    return( Carta (palo <- Espada , numero <- 1))
+}
+function anchoDeBastos(){
+    /*
+        Proposito: Describe la carta 1 de Espadas.
+        Precondicion:Ninguna
+        Tipo: Carta
+    */
+    return( Carta (palo <- Basto , numero <-1))    
+}
+function laCarta_de_(numeroDeCarta,paloDeLaCarta){
+    /*
+        Proposito: Describela carta del palo *paloDeLaCarta* con el numero *numeroDeCarta*
+        Precondicion:el numero debe estar entre 1y 12
+        Paramtero: **numeroDeCarta**: Numero
+                   **paloDeLaCarta**: Palo
+        Tipo:Carta
+    */
+    return Carta(palo <- paloDeLaCarta , numero <- numeroDeLaCarta)
+} 
+function esUnAncho_(unaCarta){
+    /*
+        Prop:Indica si la carta dada es un 1
+        Preco: Ninguna
+        parametro: unaCarta:Carta
+        Tipo:Booleano
+    */
+    return ( numero(unaCarta) == 1 )
+}
+function esUnaFigura_(unaCarta){
+    /*
+        Prop:Indica si la carta dada es una figura
+        Preco: Ninguna
+        parametro: unaCarta:Carta
+        Tipo:Booleano
+    */
+    return ( numero(unaCarta) >= 10 && numero(unaCarta) <= 12 )
+}
+function esDeOro_(unaCarta){
+    /*
+        Prop:Indica si la carta dada es una carta de Oro
+        Preco: Ninguna
+        parametro: unaCarta:Carta
+        Tipo:Booleano
+    */
+    return ( palo(unaCarta) == Oro)
+} 
+function tieneUnNúmeroMásGrande_Que_(primeraCarta, segundaCarta){
+    /*
+        Prop:Indica si  el numero  *primeraCarta* es mayor que *segundaCarta*
+        Preco: Ninguna
+        parametro:   primeraCarta: Carta 
+                     segundaCarta:Carta
+        Tipo:Booleano
+    */
+    return ( numero(primeraCarta) > numero(segundaCarta)  )
+}
+function sonDelMismoPalo_Y_(primeraCarta, segundaCarta){
+     /*
+        Prop:Indica si la carta  *primeraCarta* es del mismo palo que *segundaCarta*
+        Preco: Ninguna
+        parametro:   primeraCarta: Carta 
+                     segundaCarta:Carta
+        Tipo:Booleano
+    */
+    return ( palo(primeraCarta) == palo(segundaCarta))
+}
+function valorParaEnvidoDe_(unaCarta){
+    /*
+        Proposito: Describe el número que aporta la carta dada en el canto del envido
+        Precondicion:
+        Parametro:unaCarta: Carta
+        Tipo:Numero
+    */
+    return( choose numero(unaCarta) when( not esUnaFigura_(unaCarta))
+                   0      otherwise    )
+}
+function mayorValorEntre_Y_(primeraCarta,segundaCarta){
+    /*
+        Proposito: Describe el valor mas grande entre *primeraCarta* y *segundaCarta*
+        Precondicion: 
+        Tipo:Numero
+        Parametro: **primeraCarta** : Carta
+                   **segundaCarta**:Carta
+    */
+    return ( choose valorParaEnvidoDe_(primeraCarta) when(valorParaEnvidoDe_(primeraCarta) > valorParaEnvidoDe_(segundaCarta) ) 
+                     valorParaEnvidoDe_(segundaCarta) otherwise
+            )
+    
+}
+function sumaParaElEnvidoCon_Y_(primeraCarta, segundaCarta){
+    /*
+        Prop:Describe el número que tienen las mismas para el envido
+        Prec:ninguna
+        Parametro: primeraCarta:Carta
+                   segundaCarta: Carta
+        Tipo:Numero
+    */
+    return ( choose valorParaEnvidoDe_(primeraCarta) + valorParaEnvidoDe_(segundaCarta) + 20 when  (sonDelMismoPalo_Y_(primeraCarta, segundaCarta))
+                    mayorValorEntre_Y_(primeraCarta,segundaCarta) otherwise
+            )
+}
+function sonMejores_Y_Que_Y_( carta1, carta2, carta3, carta4){
+    /*
+        Proposito: indica si el envido del primer jugador es más grande que el envido del segundo jugador
+        Precondidicon:ninguna 
+        Observacion:  -El envido de primer jugador se calcula a prtir de las carta1 y carta 2
+                      -El envido de primer jugador se calcula a prtir de las carta3 y carta 4
+    */
+    return( sumaParaElEnvidoCon_Y_(carta1, carta2) > sumaParaElEnvidoCon_Y_(carta3, carta4)  )
+}
+--------------------------------------      EJERCICIO 4     ----------------------------------------------------
+
+type Celda is record {
+    /*
+        PROPÓSITO: Modelar una celda del tablero
+        INV.REP.: Los números son todos >=0
+    */
+    field cantidadDeAzules  // tipo: Número
+    field cantidadDeNegras  // tipo: Número
+    field cantidadDeRojas   // tipo: Número
+    field cantidadDeVerdes  // tipo: Número
+}
+
+function celdaActual(){
+    /*
+        Prop:Describe la celda actual como un registro de tipo celda
+        Prec:ninguna
+        Tipo:Celda
+    */
+    return ( Celda( cantidadDeAzules<-nroBolitas(Azul)
+                  , cantidadDeRojas<-nroBolitas(Rojo)
+                  , cantidadDeVerdes<-nroBolitas(Verde)
+                  , cantidadDeNegras<-nroBolitas(Negro)) )
+}
+procedure EscribirEnCelda_(unaCelda){
+     /*
+        Prop:Escribir  la información de la celda *unaCelda* en el tablero en la celda actual
+        Prec:ninguna
+    */
+    Poner_DeColor_(cantidadDeAzules(unaCelda), Azul)
+    Poner_DeColor_(cantidadDeRojas(unaCelda),Rojo)
+    Poner_DeColor_(cantidadDeVerdes(unaCelda),Verde)
+    Poner_DeColor_(cantidadDeNegras(unaCelda),Negro)
+}
+
+function tienenMismaCantidadDeRojas_Y_(primeraCelda, segundaCelda){
+    /*
+        Prop: Indica si las celdas *primeraCelda* y *segundaCelda* tienen la misma cantidad de bolitas rojas
+        Precondidicon: ninguna
+        Tipo: Booleano
+        Parametro: primeraCelda: Celda
+                   segundaCelda: Celda
+    */
+    return (cantidadDeRojas(primeraCelda) == cantidadDeRojas(segundaCelda))
+}
+
+--------------------------------------      EJERCICIO 5    ----------------------------------------------------
+type Persona is record{
+    /*
+        Prop: Modelar a una persona
+        INV REP: *domicilio* No debe ser un string vacio
+    */
+    field dni  //String
+    field domicilio // String
+    field esDonante // Booleano
+    
+}
+function sonConvivientes_Y_(primeraPersona, segundaPersona){
+    /*
+      Proposito: Indica si  *primeraPersona* y *segundaPersona*  son convivientes, es decir que comparten docimiclio
+      Precondicion: : *domicilio* No debe ser un string vacio
+      Tipo: Booleano
+    */
+    return ( domicilio(priemraPersona) == domicilio(segundaPersona))
+}
+function personaNacidaDe_(personaMadre){
+    /*
+        Proposito:Describe una nueva persona recién nacida que convive con su *personaMadre
+        Prec:ninguna
+        Parametro:personaMadre: Persona
+        Tipo:Persona
+    */
+    return (Persona(personaMadre | dni <- sinAsignar(),
+                                   esDonante <- False)
+
+}
+function sinAsignar() {
+    /*
+        PROPÓSITO: Describe un string vacío para representar un DNI sin asignar.
+        PRECONDICIONES: Ninguna.
+        TIPO: String.
+    */
+    return ("")
+}
+function persona_RegistradaCon_(unaPersona, unDni){
+    /*
+        Pro: Describe a la persona *unaPersona* pero con el DNI *unDNI*.
+        Prec:ninguna
+        Parametros: unaPersona: Persona
+                    unDni:Numero
+        Tipo:Persona
+    */
+    return ( Persona(unaPersona | dni <- unDni )
+}
+function persona_ConDomicilioNuevoEn_(unaPersona, domicilioNuevo){
+    /*
+        Prop: Describe a la persona *una¨Persona* con el domicilio cambiado a *docilioNuevo*
+        Prec:
+        Parametro: unaPersona: Persona
+                   domicilioNuevo: String
+        Tipo:Persona
+    */
+
+     return (Persona(unaPersona | domicilio <-  domicilioNuevo))
+}
+function persona_ConSituaciónComoDonanteCambiada(unaPersona){
+    /*
+        Prop: Describe a la persona *una¨Persona* con su  situación como donante cambiada
+        Prec:ninguna
+        Parametro: unaPersona: Persona
+        Tipo:Persona
+    */
+    return (Persona(unaPersona)| opuesto(esDonante(unaPersona) ) )
+}
+--------------------------------------      EJERCICIO 6    ----------------------------------------------------
+type Empleado is record{
+    /*
+        Pro: modrelar los datos de un empleado
+    */
+    field identidad //Persona
+    field puesto //Puesto
+    field sueldo //numero
+}
+type Puesto is variant {
+    /*
+        PROPÓSITO: Modelar los diferentes puestos que hay dentro de una empresa de software
+    */
+    case GestorDeProyecto {}
+    case LiderDeProyecto {}
+    case Desarrollador {}
+    case Operador {}
+}
+function empleado_ConSueldoActualizadoA_(unEmpleado, sueldoAActualizar){
+    /*
+        Prop: Describe a la persona *una¨Persona* con su  situación como donante cambiada
+        Prec:ninguna
+        Parametro: unaPersona: Persona
+        Tipo:Persona
+    */
+    return(Persona( unEmpleado | sueldo <- sueldoAActualiar) )
+}
+function empleado_ConNuevoPuesto_(unEmpleado, puestoNuevo){
+    /*
+        Prop: Describe al empleado *unEmpleado* con el puesto cambiada a *puestoNuevo*
+        Prec:ninguna
+        Parametro: unEmpleado: Empleado
+                   puestoNuevo: String
+        Tipo:Persona
+    */
+    return(Persona(unEmpleado | puesto <- puestoNuevo))   
+}
+function categoríaDelPuesto_(valorDelPuesto){
+    /*
+        PROPÓSITO:Describe la categoria del emmpleado del puesto *valorDelPuesto*
+        PARÁMETROS:
+            * valorDePuesto: numero - es el valor de la categoria
+            del puesto.
+        TIPO: Puesto
+        PRECONDICIONES:
+            * valorDePuesto tiene que ser de 1 a 4
+    */
+    
+    return (choose GestorDeProyecto when (valorDePuesto==4)
+                   LiderDeProyecto  when (valorDePuesto==3)
+                   Desarrollador    when (valorDePuesto==2)
+                   Operador         otherwise
+           )
+    
+}
+function empleadoConMayorCargoEntre_Y_(primerEmpleado,segundoEmpleado){
+    /*
+        Prop: Describe al empleado de mayor categoria entre *primerEmpleado* y *segundoEmpleado*
+        Prec:ninguna
+        Parametro: *primerEmpleado*: Empleado
+                   *segundoEmpleado*: Empleado
+        Tipo:Empleado
+    */    
+    return ( choose categoríaDelPuesto_(primerEmpleado)   when (categoríaDelPuesto_(primerEmpleado) > categoríaDelPuesto_(segundoEmpleado)) 
+                    categoríaDelPuesto_(segundoEmpleado) otherwise
+            )
+}
+function tienenIgualSueldo_Y_(primerEmpleado,segundoEmpleado){
+     /*
+        Prop:Indica si los empleados  *primerEmpleado* y *segundoEmpleado* tienen el mismo sueldo
+        Prec:ninguna
+        Parametro: *primerEmpleado*: Empleado
+                   *segundoEmpleado*: Empleado
+        Tipo:Booleano
+    */
+    return( sueldo(primerEmpleado) == sueldo(segundoEmpleado))
+}
+function empleado_ConAumentoEn_PorBonoDeFinalizaciónDeProyecto(unEmpleado, porcentajeDeAumento){
+    /*
+        PROPÓSITO:Describe al empleado *unEmpleado* con el sueldo actualizado en *porcentajeDeAumento*. 
+        PARÁMETROS:
+            * empleado: empleado - es el empleado en el cual se quiere
+            actualizar su sueldo
+            * porcentajeAumento: numero - es el porcentaje del aumento
+            del empleado
+        TIPO:empleado
+        PRECONDICIONES:
+            * porcentajeAumento es de 0 a 100 
+    */
+    
+    return( Empleado(empleado | sueldo <- aumentoDe_Al_(sueldo(empleado),porcentaje)) )
+}
+function aumentoDe_Al_(sueldo,porcentajeAumento){
+    
+    /*
+        PROPÓSITO:dado un sueldo y un porcentaje describe el aumento del
+        sueldo segun el porcentaje dado
+        PARÁMETROS:
+            * sueldo: numero - es el sueldo a actualizar
+            * porcentaje: numero - es el porcentaje que se desea aumentar
+        TIPO: Numero
+        PRECONDICIONES:
+            * sueldo > 0 y porcentaje es un numero del 0 a 100
+    */
+    return (((porcentaje + 100)* sueldo) / 100 )
+}
+function empleado_ConDomicilioActualizadoA_(unEmpleado, domicilioActualizado){
+    /*
+        Proposito: Describe al empleado *unEmpleado* con el domicilio actualizado a *domicilioActualizado*
+        Preco: Ninguna
+        PArametros: unEmpleado: Empleado
+                    domicilioActualizado: String
+        Tipo:Empleado            
+    */
+    return ( Empleado( unEmpleado | identidad <- persona_ConDomicilioNuevoEn_(unEmpleado,domicilioActualizado) ) )
+}
+--------------------------------------      EJERCICIO 7   ----------------------------------------------------
+type Fecha is record {
+    /* 
+    PROPÓSITO: Modelar una fecha según el calendario gregoriano.
+    INV.REP.: 
+        * dia debe estar entre 1 y la cantidad máxima de días del mes correspondiente
+        * mes debe ser un mes válido del calendario gregoriano
+        * Para Febrero:
+            - Si es año bisiesto: día <= 29
+            - Si no es año bisiesto: día <= 28
+        * Para meses de 30 días (Abril, Junio, Septiembre, Noviembre): día <= 30
+        * Para meses de 31 días (resto): día <= 31
+        * año debe ser mayor a 0
+    */
+    field dia    // Número
+    field mes    // Mes
+    field año    // Número
+}
+
+type Mes is variant {
+    /* 
+        PROPÓSITO: Modelar los meses del año del calendario gregoriano.
+    */
+    case Enero {}
+    case Febrero {}
+    case Marzo {}
+    case Abril {}
+    case Mayo {}
+    case Junio {}
+    case Julio {}
+    case Agosto {}
+    case Septiembre {}
+    case Octubre {}
+    case Noviembre {}
+    case Diciembre {}
+}
+function esAñoBisiesto_(año) {
+    /*
+        PROPÓSITO: Indica si el año dado es bisiesto según el calendario gregoriano.
+        PRECONDICIONES: **año** debe ser mayor a 0.
+        PARÁMETROS:
+            * año: Número - El año a verificar
+        TIPO: Booleano
+    */
+    return (((año mod 4) == 0) && (((año mod 100) /= 0) || ((año mod 400) == 0)))
+}
+
+function cantidadDeDiasDelMes_(mes, año) {
+    /*
+    PROPÓSITO: Describe la cantidad de días que tiene el **mes**en el **año**
+    PRECONDICIONES: **año** debe ser mayor a 0.
+    PARÁMETROS:
+        * mes: Mes - El mes del cual queremos saber los días.
+        * año: Número - El año, necesario para Febrero.
+    TIPO: Número.
+    */
+    return (choose 
+              31 when (esMesDe31Dias(mes))
+              30 when (esMesDe30Dias(mes))
+              29 when ((mes == Febrero) && esAñoBisiesto_(año))
+              28 otherwise)
+}
+function esMesDe31Dias(mes) {
+    /*
+        PROPÓSITO: Indica si el **mes** tiene 31 días.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * mes: Mes - El mes a verificar.
+        TIPO: Booleano.
+    */
+    return ((mes == Enero) || (mes == Marzo) || (mes == Mayo) || 
+            (mes == Julio) || (mes == Agosto) || (mes == Octubre) || 
+            (mes == Diciembre))
+}
+function esMesDe30Dias(mes) {
+    /*
+        PROPÓSITO: Indica si el **mes** tiene 30 días.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * mes: Mes - El mes a verificar.
+        TIPO: Booleano.
+    */
+    return ((mes == Abril) || (mes == Junio) || 
+            (mes == Septiembre) || (mes == Noviembre))
+}
+function fecha_Del_De_(dia, mes, año) {
+    /*
+        PROPÓSITO: Describe una fecha con **dia**, **mes** y **año**.
+        PRECONDICIONES: 
+            * dia debe estar entre 1 y la cantidad máxima de días del mes.
+            * año debe ser mayor a 0
+        PARÁMETROS:
+            * dia: Número - El día del mes a escribir.
+            * mes: Mes - El mes del año a escribir.
+            *año: Número - El año a escribir.
+        TIPO: Fecha.
+    */
+    return (Fecha(dia <- dia,
+                  mes <- mes,
+                  año <- año
+   ))
+}
+
+--------------------------------------      EJERCICIO 8   ----------------------------------------------------
+//Ejercicio 13
+procedure EscribirFechaConDía_Mes_Año_(dia, mes, año){
+    /*
+     Proposito:Escribir la fecha con el día **día**, mes **mes** y año **año**.
+     El día se representa con cantidad **día** de bolitas de color Azul;
+            el mes se representa con cantidad **mes** de bolitas de color Rojo; y el año
+            se representa con cantidad **año** de bolitas de color Verde. Estos tres valores
+            se expresan como argumento en ese orden.
+        PARÁMETROS:
+            *día: Es un NÚMERO, y define el día de la fecha
+            *mes: Es un NÚMERO, y define el mes de la fecha
+            *año: Es un NÚMERO, y define el año de la fecha
+        PRECONDICIÓN: Deben haber, al menos, 2 celdas vacías al Este de la posición actual del cabezal.
+    */
+    Poner_DeColor_(dia, Azul)
+    Mover(Este)
+    Poner_DeColor_(mes, Rojo)  
+    Mover(Este)
+    Poner_DeColor_(año, Verde)  
+    Mover_VecesAl_(2,Oeste)
+}
+procedure EscribirFecha_(diaAEscribir,mesAEscribir,añoAEscribir){
+    /*
+        Prop:Escrbir la fecha dada represantada con bolitas
+        Prec:Ninguna
+        Parametro:
+        
+    */
+    EscribirFechaConDía_Mes_Año_(Fecha(dia <- diaAEscribir,
+                                        mes <- mesAEscribir,
+                                        año <- añoAEscribir ))
+    
+}
+
+--------------------------------------      EJERCICIO 9   ----------------------------------------------------
+
+
+function esDíaDeÑoquis_(diaAAnalizar){
+        /*
+        Prop:Indica si el dia *diaAAnalizar* es un dia de ñoquis
+        Prec:Ninguna
+        Parametro:*diaAAnalizar*: 
+        Tipo:Booleano
+    */
+    return(dia(diaAAnalizar) == 29)
+}
+function esDelPrimerSemestre_(fechaAAnalizar){
+     /*
+        Prop:Indica si el día determinado por la fecha dada es uno del primer semestre (entre el 1ro de enero y el 31 de julio).
+        Prec:Ninguna
+        Parametro:*fechaAAnalizar*: 
+        Tipo:Booleano
+    */    
+    return(númeroDeMes_(mes(fechaAAnalizar) <= 7 )
+}
+function númeroDeMes_(mes) {
+    /*
+        PrOPÓSITO: Describe el número correspondiente al mes **mes**.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * mes: Mes - El mes a convertir en número.
+        TIPO: Número.
+    */
+    return (choose 1  when (mes == Enero)
+                   2  when (mes == Febrero)
+                   3  when (mes == Marzo)
+                   4  when (mes == Abril)
+                   5  when (mes == Mayo)
+                   6  when (mes == Junio)
+                   7  when (mes == Julio)
+                   8  when (mes == Agosto)
+                   9  when (mes == Septiembre)
+                  10  when (mes == Octubre)
+                  11  when (mes == Noviembre)
+                  12  otherwise)
+}
+
+function esFechaDeAñoBisiesto_(fecha){
+    /*
+        PrOPÓSITO: Describe el número correspondiente al mes **mes**.
+        PRECONDICIONES: Ninguna.
+        PARÁMETROS:
+            * mes: Mes - El mes a convertir en número.
+        TIPO: Número.
+    */
+    return(esAñoBisiesto_(año(fecha)))
+}
+
+function esAñoBisiesto_(año) {
+    /*
+        PROPÓSITO: Indica si el año dado es bisiesto según el calendario gregoriano.
+        PRECONDICIONES: **año** debe ser mayor a 0.
+        PARÁMETROS:
+            * año Número - El año a verificar
+        TIPO: Booleano
+    */
+    return (((año mod 4) == 0) && (((año mod 100) /= 0) || ((año mod 400) == 0)))
+}
+
+function primerDíaDelInviernoDe_(añoAAnalizar){
+     /*
+        Prop:Describe el  primer dia del invierno del año *añoAAnalizar* 
+        Prec:Ninguna
+        Parametro:*añoAAnalizar*: debe ser mayor a cero
+        Tipo:FEcha
+    */
+    return (Fecha(dia <- 21,
+                  mes <- "Junio",
+                  año <- añoAAnalizar))
+}
+
+function últimoDíaDelInviernoDe_(añoAAnalizar){
+     /*
+        Prop:Describe el  primer dia del invierno del año *añoAAnalizar* 
+        Prec:Ninguna
+        Parametro:*añoAAnalizar*: debe ser mayor a cero
+        Tipo:FEcha
+    */
+
+    return ( Fecha(dia <- 2,
+                  mes <- "Septiembre",
+                  año <- añoAAnalizar) ) 
+}
+
+
+function esMásAntigua_Que_(primeraFecha, segundaFecha){
+    /*
+        Prop:Indica si la fecha *primeraFecha* es anterior a la fecha *segundaFecha*
+        Prec:Ninguna
+        Parametro:*añoAAnalizar*: debe ser mayor a cero
+        Tipo:Booleano
+    */
+    return((año(primeraFecha) < año(segundaFecha)) || (año(primeraFecha) == año(segundaFecha) && 
+         númeroDeMes_(mes(primeraFecha)) < númeroDeMes_(mes(segundaFecha))) ||
+        (año(primeraFecha) == año(segundaFecha) && 
+         númeroDeMes_(mes(primeraFecha)) == númeroDeMes_(mes(segundaFecha)) &&
+         dia(primeraFecha) < dia(segundaFecha)))   
+}
+function singularCon_(elemento){
+    /*
+        Proposito:Describe una lista con el elemento **elemento**
+        Prec:ninguna
+        Parametro:
+        Tipo:Lista
+    */
+    return([elemento])
+}
+
+function segundoDe_(unaLista){
+    /*
+        Proposito:Describe  el segundo elemento de la lista **unaLista**
+        Prec:ninguna
+        Parametro:unaLista: 
+        Tipo:Lista
+    */
+    return(primero[Norte,Este,Sur,Oeste])
+    
+}

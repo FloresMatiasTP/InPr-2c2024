@@ -1,0 +1,316 @@
+//---------------------El Bosque------------------------------------
+program{
+    Polinizar()
+}
+
+procedure PonerUnaSemilla(){
+    /* 
+     Proposito:Poner una bolita de Rojo color en la celda Actual
+     Precondicion:Ninguna
+    */
+    Poner(Rojo)
+}
+procedure PonerUnArbol(){
+    /* 
+     Proposito:Poner una bolita de color Verde en la celda Actual
+     Precondicion:Ninguna
+    */
+    Poner(Verde)
+}
+
+procedure PonerUnaBomba(){
+    /* 
+     Proposito:Poner una bolita de color Negro en la celda Actual
+     Precondicion:Ninguna
+    */
+    Poner(Negro)
+}
+procedure PonerUnNutriente(){
+    /* 
+     Proposito: Poner una bolita de color Azul en la celda Actual
+     Precondicion:Ninguna
+    */
+    Poner(Azul)
+}
+procedure SacarUnaSemilla(){
+    /* 
+     Proposito:Sacar una bolita de color Rojo de la celda actual
+     Precondicion:Debe haber al menos una bolita de color rojo en la celda actual
+    */
+    Sacar(Rojo)
+}
+procedure SacarUnArbol(){
+    /* 
+     Proposito: Sacar una bolita de color verde de la celda actual
+     Precondicion:Debe haber al menos una bolita de color Verde en la celda actual
+    */
+    Sacar(Verde)
+}
+procedure SacarUnaBomba(){
+    /* 
+     Proposito:Sacar una bolita de color Negro  de la celda actual
+     Precondicion:Debe haber al menos una bolita de color Negro en la celda actual
+    */
+    Sacar(Negro)
+}
+procedure SacarUnNutriente(){
+    /* 
+     Proposito:Sacar una bolita de color Azul de la celda actual
+     Precondicion:Debe haber al menos una bolita de color Azul en la celda actual
+    */
+    Sacar(Azul)
+}
+---------------------------El Bosque Parte 2-----------------------------------------
+procedure Poner_Semillas(cantidadDeSemillasAPoner){
+    /*
+     Proposito: Poner en la parcela actual **cantidadDeSemillasAPoner** semillas
+     Precondicion:ninguna
+     Parametros:**cantidadDeSemillasAPoner** es un numero y define la cantidad de semillas que se van a poner
+    */
+    repeat(cantidadDeSemillasAPoner){
+        PonerUnaSemilla()
+    }
+}
+ procedure Sacar_Semillas(cantidadDeSemillasASacar){
+     /*
+     Proposito:Sacar **cantidadDeSemillasASacar** semillas de la parcela actual
+     Precondicion:Deber haber al menos **cantidadDeSemillasASacar**  semillas en la parcela actual
+     Parametros:**cantidadDeSemillasASacar**
+    */
+    repeat(cantidadDeSemillasASacar){
+        SacarUnaSemilla()    
+    }
+ }
+ procedure Poner_Arboles(cantidadDeArbolesAPoner){
+     /*
+     Proposito: Poner **cantidadDeÁrbolesAPoner** arboles en la parcela actual
+     Precondicion: ninguna
+     Parametros:**cantidadDeÁrbolesAPoner** es un nuero y es la cantidad de arboles que se van a poner en la parcela actual
+    */
+    repeat(cantidadDeÁrbolesAPoner){
+        PonerUnArbol()
+    }
+ }
+ procedure Sacar_Arboles(cantidadDeArbolesASacar){
+     /*
+     Proposito: Sacar **cantidadDeÁrbolesASacar** arboles de la parcela actual
+     Precondicion: Debe existir al menos **cantidadDeÁrbolesASacar** de arboles en la parcela actual
+     Parametros:**cantidadDeÁrbolesASacar** es un numero y es la cantidad de arboles a sacar
+    */
+     repeat(cantidadDeArbolesASacar){
+         SacarUnArbol()
+     }
+ }
+procedure Poner_Nutrientes(cantidadDeNutrientesAPoner){
+    /*
+     Proposito:Poner **cantidadDeNutrientesAPoner** nutrientes en la parcela actual
+     Precondicion:ninguna
+     Parametros:**cantidadDeNutrientesAPoner** es la cantidad de nutrientes a poner 
+    */
+    repeat(cantidadDeNutrientesAPoner){
+        PonerUnNutriente()
+    }
+}
+procedure Sacar_Nutrientes(cantidadDeNutrientesASacar) {
+    /*
+     Proposito: Poner **cantidadDeNutrientesASacar** en la parcela actual
+     Precondicion:Debe haber al menos **cantidadDeNutrientesASacar** nutrientes en la parcela actual
+     Parametros:**cantidadDeNutrientesASacar** es la cantidad e nutrientes que se va a sacr de la parcela acutal
+    */
+    repeat(cantidadDeNutrientesASacar){
+        SacarUnNutriente()
+    }
+}
+
+
+-------------------------------------EL BOSQUE PARTE 3--------------------------------------------
+procedure Poner_SemillasAl_(cantidadDeSemillas, direccionAPoner){
+    /* deja el cabezal en la celda inicial
+        Proposito:Poner **cantidadDeSemillas** semillas en la celda hacia el **direccionAPoner** de la celda actual
+        Precondicion:Debe haber al meno 1 celda hacia el **direccionAPoner** de la celda actual
+        Parametros:
+        **cantidadDeSemillas** numero -Es la cantidad de semillas que va a poner en la celda 
+        **direccionAPoner** direccion- Es la direcccion a la cual se va a mover el cabezal
+    */
+    Mover(direccionAPoner)
+    Poner_Semillas(cantidadDeSemillas)
+    Mover(opuesto(direccionAPoner))
+
+}
+
+
+procedure Sacar_SemillasEnDiagonalAl_Y_(cantidadDeSemillas, primeraDirDiagonal, segundaDirDiagonal){
+/*      Proposito: Sacar ***cantidadDeSemillas** semillas de la parcela en direccion diagonal al **primeraDirDiagonal** y **segundaDirDiagonal**
+      Precondicion: Debe Haber al menos 1 parcela en direccion hacia el **primeraDirDiagonal** y 1 parcela en direccion **segundaDirDiagonal** de la celda actual
+      Parametros:**cantidadDeSemillas**: numero - Es la cantidad de semillas a sacar
+      **primeraDirDiagonal**, **segundaDirDiagonal**: direcciones - Son la direcciones en las que se tiene que mover el cabezal
+  */  
+    Mover(primeraDirDiagonal)
+    Mover(segundaDirDiagonal)
+    Sacar_Semillas(cantidadDeSemillas)
+    Mover(opuesto(primeraDirDiagonal))
+    Mover(opuesto(segundaDirDiagonal))
+    }
+procedure Sacar_ArbolesEnDiagonalHorariaAl_( cantidadDeArboles,direccionDiagonal){
+    /* la diagonal horaria de una dirección es aquella dada por la dirección y su dirección siguiente.
+    / Ej. la diagonal horaria de Norte es Norte-Este, la de Sur es Sur-Oeste.
+    / deja el cabezal en la celda inicial
+      Proposito:
+      Precondicion:Debe haber al menos 1 celda en direccion **direccionDiagonal** y 1 celda 
+      en direccion hacia **siguiente(direccionDiagonal)**
+      Debe haber al menos **cantidadDeArboles** arboles en la celda actual
+      Parametros:**cantidadDeArboles** : numero - Es la cantidad de arboles que se van sacar
+      **direccionDiagonal** direccion: Es la direcion a donde se va a mover el cabezal en diagonal
+    */
+    Mover(direccionDiagonal)
+    Mover(siguiente(direccionDiagonal))
+    Sacar_Arboles(cantidadDeArboles)
+    Mover(opuesto(direccionDiagonal))
+    Mover(previo(direccionDiagonal))
+
+}
+---------------------------------------PARTE 4---------------------------------------------------
+
+function arbol(){
+    /*
+        Proposito:Describe si en la parcela actual hay  arbol
+        Precondicion:Ninguna
+        Parametros:ninguno
+        Observacion:Un arbol es representado por una bolita verde
+        Tipo:Booleano
+    */
+    return (nroBolitas(Verde) == 1)
+    
+}
+function haySemilla(){
+    /*
+        Proposito:Indicar si en la parcela actual hay  semilla
+        Precondicion:ninguna
+        Parametros:ninguno
+        Observacion:una semilla es representado por una bolita roja y una pacela por una celda
+        Tipo:Booleano
+    */
+    return(hayBolitas(Rojo))
+    
+}
+function bomba(){
+    /*
+        Proposito:Describe si en la parcela actual hay bombas
+        Precondicion:ninguna
+        Parametros:-
+        Observacion:una bomba es represenada por una bolita negra
+        Tipo:
+    */
+    return(hayBolitas(Negro))
+}
+function cantidadDeNutrientes(){
+    /*
+        Proposito:Indicar si en la parcela actual hay nutrientes
+        Precondicion:
+        Parametros:
+        Observacion: un nutriente es representado por una bolita azul
+        Tipo:Booleano
+
+    */
+    return(nroBolitas(Azul))
+}
+function cantidadDeArboles(){
+    /*
+        Proposito:Describe la cantidad de arboles que hay en la parcela actual
+        Precondicion:ninguna
+        Parametros:
+        Observacion: un arbol es representado por una bolita verde
+        Tipo:Booleano
+
+    */
+    return(nroBolitas(Verde))
+}
+
+
+procedure GerminarSemilla(){
+    /*
+        Proposito:transformar una semilla en un árbol en la parcela actual. La germinación consume tres unidades de
+                   nutrientes. Si en la parcela actual no hay semilla, o no hay suficientes nutrientes, no se hace nada
+        Precondicion:Debe haber al menos una semilla en la parcela actual
+        Parametros:
+        Observacion:
+    */
+    if( cantidadDeNutrientes()>= 3 ){
+        SacarUnaSemilla()
+        PonerUnArbol()
+        Sacar_Nutrientes(3)
+    }
+}
+
+
+procedure AlimentarÁrboles(){
+    /*
+        Proposito:Alimentar a los arboles que hay en la aprcela actual,  cada arbol consume un nutriente.Si no
+                   hay la cantidad sufieciente de nutrinetes para alimetar a todos los arboles, se consumen todos los nutrientes 
+                   que haya en la parcela actual
+        Precondicion:
+    
+    */
+    if(cantidadDeNutrientes() >= cantidadDeArboles()){
+        Sacar_Nutrientes(cantidadDeArboles())
+    }else{
+        Sacar_Nutrientes(cantidadDeNutrientes())
+    }
+}
+
+procedure ExplotarBomba(){
+    /*
+        Proposito: Explotar una bomba en la parcela actual, eliminado a 5 arboles de la parcela actual
+                   y si hay una parcela lindante al norte elimina a 3 arboles de esa parcela        
+        Precondicion:Debe haber al menos una bomba en la parcela actual
+    */
+    
+    if(cantidadDeArboles()>= 5 ){
+        SacarUnaBomba()
+        Sacar_Arboles(5)
+        Derribar3ArbolesAlNorteDeLaParcelaActual()
+    }else{    
+        Sacar_Arboles(cantidadDeArboles())
+        SacarUnaBomba()
+    }
+}
+
+procedure Derribar3ArbolesAlNorteDeLaParcelaActual(){
+    /*
+        Proposito: Derribar 3 arboles al norte de la parcela actual si existe la parcela al norte,  
+                    por la onda expansiva de la bomba que exploto en la celda lindante al sur 
+        Precondicion:
+    */
+    
+    if(puedeMover(Norte)){
+        Mover(Norte)
+        Sacar_Arboles(3)
+    }    
+}
+
+procedure Polinizar(){
+    /*
+        Proposito: Polonizar la parcela al este de la actual, haciendo que ponga tantas semillas como la cantidad de arboles que  hay en la parcela 
+             actual menos tres al este de la parcela actual .Si en la parcela actual hay menos de 3 arboles o no existe parcela en direccion al Este no hace nada.
+        Precondicion:
+    */
+    if(cantidadDeArboles() >3 || puedeMover(Este) ){
+        Poner_SemillasAl_((cantidadDeArboles() -3), Este)
+    }    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

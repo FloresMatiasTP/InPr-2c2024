@@ -1,0 +1,395 @@
+
+
+////EJERCICIO 1
+
+
+procedure ComerTodosLosCocosDelNivel (){
+    /*
+        Observacion: Es un recorrido de procesamiento sobre las celdas celdas del tablero en direccion hacia el Norte 
+                   y este en donde se van a comer  los cocos de cada celda 
+     */
+    LlevarGobsManAlBorde_(Oeste)
+    LlevarGobsManAlBorde_(Sur)
+    while( haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte) ) {
+        ComerCoco()
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+        
+    }
+      
+        ComerCoco()
+}
+
+
+procedure MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+     /*
+    Proposito: Ubicar el cabezal en la siguiente celda en un recorrido en las direcciones **dirPrincipal** y **dirSecundaria**. 
+               El cabezal queda en la siguiente celda del recorrido desde la celda actual.
+    Precondiciones: 
+        * dirPrincipal y dirSecundaria no deben ser iguales ni opuestas.
+        * Debe existir una siguiente celda en el recorrido.
+    Parametros:
+        * dirPrincipal: Dirección - La dirección principal del recorrido.
+        * dirSecundaria: Dirección - La dirección secundaria del recorrido.
+    */
+    if (puedeMover(dirPrincipal)  ) {
+         MoverGobsManAl_(dirPrincipal)
+    } else {
+        MoverGobsManAl_(dirSecundaria)
+         LlevarGobsManAlBorde_(opuesto(dirPrincipal))
+    }
+}
+////EJERCICIO 2
+procedure ComerCerezaSiHay() {
+    
+    if(hayCereza()){
+        ComerCereza()
+    }
+}
+
+procedure  ComerTodasLasCerezasDelNivel(){
+    /*
+        Observacion: Es un recorrido de procesamiento sobra las celdas del tablero que como todas las cerezas que se encuentre en el nivel
+    */
+     LlevarGobsManAlBorde_(Oeste)
+    LlevarGobsManAlBorde_(Sur)
+    while( haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)  ) {
+        ComerCerezaSiHay()
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+        ComerCerezaSiHay()
+}
+
+
+
+
+////EJERCICIO 3
+
+procedure ComerTodoLoQueSeEncuentreEnElNivel(){
+    /*
+        Observacion:
+    */
+    ComerTodosLosCocosDelNivel()
+    ComerTodasLasCerezasDelNivel()
+}
+
+////EJERCICIO 4
+procedure ComerCerezaOCocosSiHayEnLaCeldaActual() {
+    
+    if(hayCereza()){
+        ComerCereza()
+    }else{
+        ComerCoco()
+    }
+}
+procedure ComerTodoLoQueSeEncuentreEnElNivel(){
+    /*
+        Observacion:Es un recorrido de procesamiento sobre las celdas del tablero en direccion al NorEste en donde Gobsman come todas 
+                    las cerezas y cocos que se encuentre en el nivel
+    */
+    UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    while( haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte) ) {
+         ComerCerezaOCocosSiHayEnLaCeldaActual()
+          MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+     ComerCerezaOCocosSiHay()
+}
+
+////EJERCICIO 5
+
+procedure RecorrerNivelMuriendoEnElFantasma(){
+    /*
+        Observacion: Es un recorrido de busqueda
+        sobre las celdas del tablero en direccion al NorEste 
+        en donde recorre el tablero hasta encontrase con una celda que contiene a un fastasma y muriendo a Gobsman cuando se lo encuentre
+    */
+    UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    while ( not hayFantasma() ) {
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+    MorirGobsMan()
+}
+
+
+////EJERCICIO 6
+
+procedure RecorrerNivelMuriendoSiHayFantasma(){
+    /*
+        Observacion: Es un recorrido de busqueda
+        sobre las celdas del tablero en direccion al NorEste 
+        buscando la celda que contiene a un fanstasma y muriendo a gobsmnan si encontre al fastasma
+    */
+    UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    while(   haySiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte) && not hayFantasma() )  {
+        MorirGobsManSiHayFastasma()
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+    MorirGobsManSiHayFastasma()
+}
+
+procedure MorirGobsManSiHayFastasma(){
+    
+    if(hayFantasma()){
+        MorirGobsMan()
+    }
+}
+
+procedure JugarNivel(){
+    /*
+        Observacion : Es un recorrido de busqueda 
+         sobre las celdas del nivel , Moviendo a Gobsman
+         buscando
+    */
+        UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Oeste, Norte)     
+        while(   haySiguienteCeldaEnUnRecorridoAl_Y_(Oeste, Norte) &&  not hayFantasma() ){
+            ComerCerezaOCocosSiHayEnLaCeldaActual()
+             MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Oeste, Norte)
+        }
+        ComerCerezaOCocosSiHayEnLaCeldaActual()
+    
+    
+}
+
+
+-------------------------------------------------------------------------------  MS GOBSMAN   ----------------------------------------
+////EJERCICIO 10
+function puntajeAObtenerEnCeldaActual(){
+    /*
+        Proposito: Describe la cantida de puntos que obtendra Ms Gobsman despues de comerse todo lo que hay en la celda actual
+        Precondicion: Debe estar sobre l
+    */
+    
+    return( choose 
+                  2100 when(hayCereza() &&  hayCoco() )      
+                  2000 when( hayCereza()  )
+                  100 when( hayCoco()  )
+                    0  otherwise)
+           )  
+}
+////EJERCICIO 11
+function puntajeAObtenerEnCeldaActual{
+    /*
+        Prop:Describir la cantidad se puntos a obtener de la celda actual
+        Prec:ninguno
+        Tipo:Numero
+    */
+    return ( puntajeAObtenerEnCeldaActualPorCocos() + puntajeAObtenerEnCeldaActualPorCerezas() + puntajeAObtenerEnCeldaActualPorFrutillas() )    
+}    
+
+function puntajeAObtenerEnCeldaActualPorCocos(){
+    /*
+        Prop:Describe la cantidad de puntos a obtener por comerse los cocos de la celda actual
+        Prec:ninguno
+        Tipo:Numero
+    */
+    return( choose 100 when( hayCoco )
+                    0  otherwise)
+           )  
+}
+function puntajeAObtenerEnCeldaActualPorCerezas(){
+    /*
+        Prop:Describe la cantidad de puntos a obtener por comerse las cerezas de la celda actual
+        Prec:ninguno
+        Tipo:Numero
+    */
+    return( choose 2000 when( hayCerezas() )
+                    0  otherwise)
+           )  
+}
+function puntajeAObtenerEnCeldaActualPorFrutillas(){
+    /*
+        Prop:Describe la cantidad de puntos a obtener por comerse las frutillas de la celda actual
+        Prec:ninguno
+        Tipo:Numero
+    */
+    return( choose 500 when( hayFrutillas() )
+                    0  otherwise)
+           )  
+}
+////EJERCICIO 12
+procedure ComerLoQueHayEnLaCeldaYMostrarPuntos(){
+    /*
+        Prop:Hacer comer a Ms Gobsman todo lo que haya en la celda actual y mostrar los puntos obtenidos tras comerselos
+        Prec:El cabezal debe estar sobre Ms gobsman
+        
+    */
+    ComerCoco()
+    ComerCereza()
+    ComerFrutilla()
+    Mostrar_PuntosEnPantalla(puntajeAObtenerEnCeldaActual())
+}
+
+////EJERCICIO 13
+
+procedure cantidadDePuntosEnElNivel() {
+    // caso de borde en el return
+    /*
+        Observacion: Es un recorrido de acumulacion
+                     sobre las eldas del nivel , moviendo a Ms-Gobs-Man
+                     en donde acumulara los puntos obtenidos en cada celda del nivel
+    */
+     UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Este, Norte)   
+     puntajeTotalAlMomento := 0
+    while(   haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)  ){
+        puntajeTotalAlMomento := puntajeTotalAlMomento + puntajeAObtenerEnCeldaActual()
+         MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+    return(puntajeAObtenerEnCeldaActual +  puntajeAObtenerEnCeldaActual() )
+    
+}    
+
+//  caso de borde en la primer celda
+function cantidadDePuntosEnElNivel() {
+    /*
+        Prop: Describe la cantidad de puntos que Ms gobsman obtendria en el nivel por comerse todo lo que hay
+        Observacion: Es un recorrido de acumulacion
+                     sobre las eldas del nivel , moviendo a Ms-Gobs-Man
+                     en donde acumulara los puntos obtenidos en cada celda del nivel
+    */
+    
+    UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Este, Norte)   
+    puntajeTotalAlMomento := puntajeAObtenerEnCeldaActual()
+    while(   haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)  ){
+         MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+         puntajeTotalAlMomento := puntajeTotalAlMomento + puntajeAObtenerEnCeldaActual()
+    }
+    return(puntajeAObtenerEnCeldaActual  )
+}    
+////EJERCICIO 14
+
+function  hayAlgúnFantasmaEnElNivel(){
+    /*
+        Prop: Indica si hay algun fantasma en todo el nivel actual
+        Preco:
+        Tipo:Booleano
+        Observacion: Es un recorrido de busqueda sin saber si esta
+        sobre las celdas del tablero en direccion al NorEste 
+         buscando si hay algun fantasma en el nivel
+    */
+    UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    while ( not hayFantasma() ) {
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(Este,Norte)
+    }
+    return (hayFantasma())
+}
+////EJERCICIO 15
+function cantidadDePuntosEnNivelHacia_Y_(direcciónPrincipal,direcciónSecundaria){
+    /*
+        Prop: Describe la cantidad de puntos obtenidos en el nivel hasta encontrarse con el fantasmas si hay
+        Preco:El cabezal debe estra sobre Ms gobsman
+        Tipo:Numero
+        Observacion: Es un de   recorrido de acumulacion y  busqueda sin saber si esta
+        sobre las celdas del tablero en direccion al**direcciónPrincipal** y al  **direcciónSecundaria**  
+         buscando si hay algun fantasma en el nivel y contando los puntos obtenidos hasta encontrarse con el fantasma si hay
+    */
+     UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(direcciónPrincipal,direcciónSecundaria)
+     cantidadDePuntosObtenidosAlMomento :=  puntajeAObtenerEnCeldaActual()
+    while(   haySiguienteCeldaEnUnRecorridoAl_Y_(direcciónPrincipal,direcciónSecundaria) && not hayFantasma() )  {
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(direcciónPrincipal,direcciónSecundaria)
+       cantidadDePuntosObtenidosAlMomento:= cantidadDePuntosObtenidosAlMomento + puntajeAObtenerEnCeldaActual()  
+    }
+    return(cantidadDePuntosObtenidosAlMomento)
+}
+
+////EJERCICIO 16
+function esMejorRecorridoHacia_Y_QueHacia_Y_(dirPrincipal1, dirSecundaria1, dirPrincipal2,dirSecundaria2){
+    /*
+        Proposito: Indica si el recorrido hacia el **dirPrincipal1** y **dirSecundaria1** acumula efectivamente mas puntos que el recorrido hacia el **dirPrincipal2** y **dirSecundaria**
+        Prec:El cabezal debe estar sobre Ms gobsman
+        Tipo:Booleano
+    */
+    return ( cantidadDePuntosEnNivelHacia_Y_(dirPrincipal1, dirSecundaria1) > cantidadDePuntosEnNivelHacia_Y_(dirPrincipal2, dirSecundaria2)  )
+}
+
+////EJERCICIO 17
+function masDeLaMitadDelNivelSiVaHacia_Y_(dirPrincipal,dirSecundaria) {
+    /*
+        Prop: Indica si Ms. Gobs-Man pasó más de la mitad del nivel recorriendo hacia dirPrincipal y dirSecundaria
+        PRec:El caebzal debe estra sobre M Gobs-Man
+        PArametro:
+        Tipo:Booleano
+    */
+    UbicarAGobsmanEnLaPrimerCeldaEnUnRecorridoAl_Y_(direcciónPrincipal,direcciónSecundaria)
+    cantidadDeCeldasRecorridasAlMomento:=1
+    while( haySiguienteCeldaEnUnRecorridoAl_Y_(direcciónPrincipal,direcciónSecundaria)){
+        MoverAGobsmanASiguienteCeldaEnUnRecorridoAl_Y_(direcciónPrincipal,direcciónSecundaria)
+        cantidadDeCeldasRecorridasAlMomento:= cantidadDeCeldasRecorridasAlMomento +1
+    }
+    return(cantidadDeCeldasRecorridasAlMomento >= tamañoDelTablero()/2)
+} 
+////EJERCICIO 18
+
+// Primitivas:
+function msGobsMan() {
+/*
+    PROPÓSITO: Describe el color que representa a ms-gobs-man.
+    PRECONDICIÓN: Ninguna.
+*/
+    return(Azul)
+}
+
+function coco() {
+/*
+    PROPÓSITO: Describe el color que representa a un coco.
+    PRECONDICIÓN: Ninguna.
+*/
+    return(Negro)
+}
+
+function cereza() {
+/*
+    PROPÓSITO: Describe el color que representa a una cereza.
+    PRECONDICIÓN: Ninguna.
+*/
+    return(Negro)
+}
+
+function frutilla() {
+/*
+    PROPÓSITO: Describe el color que representa a una frutilla.
+    PRECONDICIÓN: Ninguna.
+*/
+    return(Rojo)
+}
+
+function fantasma() {
+/*
+    PROPÓSITO: Describe el color que representa a un fantasma.
+    PRECONDICIÓN: Ninguna.
+*/
+    return(Azul)
+}
+unction hayFantasma() {
+/*
+    PROPÓSITO: Indica cuando hay un fantasma en la celda actual.
+    PRECONDICIÓN: Ninguna.
+    TIPO: Booleano
+*/
+    return(nroBolitas(fantasma()) == 5)
+}
+
+function hayCereza() {
+/*
+    PROPÓSITO: Indica cuando hay una cereza en la celda actual.
+    PRECONDICIÓN: Ninguna.
+    TIPO: Booleano
+*/
+    return((nroBolitas(cereza()) == 2) || (nroBolitas(cereza()) == 3))
+}
+
+function hayCoco(){
+/*
+    PROPÓSITO: Indica cuando hay un coco en la celda actual.
+    PRECONDICIÓNES: Ninguna.
+    TIPO: Booleano.
+*/
+    return((nroBolitas(coco()) == 1) || (nroBolitas(coco()) == 3))
+}
+
+function hayFrutilla() {
+/*
+    PROPÓSITO: Indica cuando hay una frutilla en la celda actual.
+    PRECONDICIÓNES: Ninguna.
+*/
+    return (nroBolitas(frutilla()) == 1)
+}
+
